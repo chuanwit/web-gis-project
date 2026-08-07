@@ -1,0 +1,23 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ul,
+li {
+  list-style: none;
+  border: none;
+}
+table {
+  border-collapse: collapse;
+}
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+#app {
+  width: 100%;
+  height: 100%;
+}

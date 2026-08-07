@@ -1,0 +1,1005 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 10000,
+      "properties": {
+        "name": "交通拥堵",
+        "level": 1,
+        "car_num": "鄂A911611",
+        "phone": "13365547011",
+        "id": "10000",
+        "event_num": "SJ100000",
+        "area": "区域4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.380731,
+          30.488228
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10001,
+      "properties": {
+        "name": "碰撞",
+        "level": 2,
+        "car_num": "鄂A505217.99999999994",
+        "phone": "13144667690",
+        "id": "10001",
+        "event_num": "SJ100001",
+        "area": "区域4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.418612,
+          30.597738
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10002,
+      "properties": {
+        "name": "追尾",
+        "level": 3,
+        "car_num": "鄂A451775",
+        "phone": "18647102237",
+        "id": "10002",
+        "event_num": "SJ100002",
+        "area": "区域3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.244041,
+          30.561289
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10003,
+      "properties": {
+        "name": "车辆故障",
+        "level": 3,
+        "car_num": "鄂A548233",
+        "phone": "15710283361",
+        "id": "10003",
+        "event_num": "SJ100003",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.430009,
+          30.535188
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10004,
+      "properties": {
+        "name": "刮擦",
+        "level": 3,
+        "car_num": "鄂A114442",
+        "phone": "13777464716",
+        "id": "10004",
+        "event_num": "SJ100004",
+        "area": "区域5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.390956,
+          30.572406
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10005,
+      "properties": {
+        "name": "车辆故障",
+        "level": 1,
+        "car_num": "鄂A620830",
+        "phone": "18744577713",
+        "id": "10005",
+        "event_num": "SJ100005",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.389243,
+          30.460116
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10006,
+      "properties": {
+        "name": "交通拥堵",
+        "level": 3,
+        "car_num": "鄂A61517",
+        "phone": "14556486370",
+        "id": "10006",
+        "event_num": "SJ100006",
+        "area": "区域1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.3347,
+          30.621898
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10007,
+      "properties": {
+        "name": "碰撞",
+        "level": 3,
+        "car_num": "鄂A193594",
+        "phone": "13305753393",
+        "id": "10007",
+        "event_num": "SJ100007",
+        "area": "区域5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.203595,
+          30.517786
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10008,
+      "properties": {
+        "name": "交通拥堵",
+        "level": 3,
+        "car_num": "鄂A813260",
+        "phone": "15889321256",
+        "id": "10008",
+        "event_num": "SJ100008",
+        "area": "区域3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.340339,
+          30.599663
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10009,
+      "properties": {
+        "name": "碰撞",
+        "level": 3,
+        "car_num": "鄂A949007",
+        "phone": "18816645518",
+        "id": "10009",
+        "event_num": "SJ100009",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.413513,
+          30.631289
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10010,
+      "properties": {
+        "name": "车辆故障",
+        "level": 1,
+        "car_num": "鄂A862761",
+        "phone": "15965147148",
+        "id": "10010",
+        "event_num": "SJ100010",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.227593,
+          30.604162
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10011,
+      "properties": {
+        "name": "追尾",
+        "level": 2,
+        "car_num": "鄂A977089",
+        "phone": "15341843977",
+        "id": "10011",
+        "event_num": "SJ100011",
+        "area": "区域1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.233262,
+          30.617456
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10012,
+      "properties": {
+        "name": "交通拥堵",
+        "level": 3,
+        "car_num": "鄂A670129",
+        "phone": "15262675584",
+        "id": "10012",
+        "event_num": "SJ100012",
+        "area": "区域4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.374128,
+          30.542495
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10013,
+      "properties": {
+        "name": "车辆故障",
+        "level": 3,
+        "car_num": "鄂A846494",
+        "phone": "15816361061",
+        "id": "10013",
+        "event_num": "SJ100013",
+        "area": "区域5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.35988,
+          30.55903
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10014,
+      "properties": {
+        "name": "追尾",
+        "level": 3,
+        "car_num": "鄂A780940",
+        "phone": "13853307226",
+        "id": "10014",
+        "event_num": "SJ100014",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.283627,
+          30.580853
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10015,
+      "properties": {
+        "name": "追尾",
+        "level": 3,
+        "car_num": "鄂A209997",
+        "phone": "13651777885",
+        "id": "10015",
+        "event_num": "SJ100015",
+        "area": "区域5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.413757,
+          30.49004
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10016,
+      "properties": {
+        "name": "刮擦",
+        "level": 3,
+        "car_num": "鄂A820662",
+        "phone": "13016916753",
+        "id": "10016",
+        "event_num": "SJ100016",
+        "area": "区域5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.443815,
+          30.552319
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10017,
+      "properties": {
+        "name": "追尾",
+        "level": 2,
+        "car_num": "鄂A856278",
+        "phone": "13860403898",
+        "id": "10017",
+        "event_num": "SJ100017",
+        "area": "区域5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.256107,
+          30.62201
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10018,
+      "properties": {
+        "name": "追尾",
+        "level": 2,
+        "car_num": "鄂A519348.99999999994",
+        "phone": "15218546489",
+        "id": "10018",
+        "event_num": "SJ100018",
+        "area": "区域1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.211267,
+          30.509428
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10019,
+      "properties": {
+        "name": "车辆故障",
+        "level": 1,
+        "car_num": "鄂A785161",
+        "phone": "18651285246",
+        "id": "10019",
+        "event_num": "SJ100019",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.368878,
+          30.475569
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10020,
+      "properties": {
+        "name": "交通拥堵",
+        "level": 3,
+        "car_num": "鄂A699858",
+        "phone": "13151721652",
+        "id": "10020",
+        "event_num": "SJ100020",
+        "area": "区域3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.262071,
+          30.554307
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10021,
+      "properties": {
+        "name": "追尾",
+        "level": 2,
+        "car_num": "鄂A480321",
+        "phone": "15979801857",
+        "id": "10021",
+        "event_num": "SJ100021",
+        "area": "区域3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.230162,
+          30.47487
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10022,
+      "properties": {
+        "name": "碰撞",
+        "level": 1,
+        "car_num": "鄂A531976",
+        "phone": "18771733911",
+        "id": "10022",
+        "event_num": "SJ100022",
+        "area": "区域3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.238522,
+          30.584892
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10023,
+      "properties": {
+        "name": "碰撞",
+        "level": 3,
+        "car_num": "鄂A390185",
+        "phone": "15664132280",
+        "id": "10023",
+        "event_num": "SJ100023",
+        "area": "区域4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.359627,
+          30.611719
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10024,
+      "properties": {
+        "name": "刮擦",
+        "level": 3,
+        "car_num": "鄂A915467",
+        "phone": "18821319362",
+        "id": "10024",
+        "event_num": "SJ100024",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.219726,
+          30.494592
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10025,
+      "properties": {
+        "name": "车辆故障",
+        "level": 3,
+        "car_num": "鄂A770017",
+        "phone": "18626291268",
+        "id": "10025",
+        "event_num": "SJ100025",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.371032,
+          30.634989
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10026,
+      "properties": {
+        "name": "车辆故障",
+        "level": 3,
+        "car_num": "鄂A762530",
+        "phone": "15523742847",
+        "id": "10026",
+        "event_num": "SJ100026",
+        "area": "区域1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.262125,
+          30.556416
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10027,
+      "properties": {
+        "name": "碰撞",
+        "level": 2,
+        "car_num": "鄂A364918",
+        "phone": "13907885472",
+        "id": "10027",
+        "event_num": "SJ100027",
+        "area": "区域3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.291882,
+          30.576852
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10028,
+      "properties": {
+        "name": "碰撞",
+        "level": 1,
+        "car_num": "鄂A962894",
+        "phone": "18885375014",
+        "id": "10028",
+        "event_num": "SJ100028",
+        "area": "区域1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.232962,
+          30.50554
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10029,
+      "properties": {
+        "name": "追尾",
+        "level": 2,
+        "car_num": "鄂A221350",
+        "phone": "13106539317",
+        "id": "10029",
+        "event_num": "SJ100029",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.247217,
+          30.544711
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10030,
+      "properties": {
+        "name": "车辆故障",
+        "level": 1,
+        "car_num": "鄂A750541",
+        "phone": "15922139877",
+        "id": "10030",
+        "event_num": "SJ100030",
+        "area": "区域3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.206508,
+          30.648259
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10031,
+      "properties": {
+        "name": "刮擦",
+        "level": 1,
+        "car_num": "鄂A967044",
+        "phone": "13058167316",
+        "id": "10031",
+        "event_num": "SJ100031",
+        "area": "区域3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.369261,
+          30.487404
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10032,
+      "properties": {
+        "name": "追尾",
+        "level": 3,
+        "car_num": "鄂A539573",
+        "phone": "15164312577",
+        "id": "10032",
+        "event_num": "SJ100032",
+        "area": "区域1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.375721,
+          30.462945
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10033,
+      "properties": {
+        "name": "刮擦",
+        "level": 1,
+        "car_num": "鄂A120856",
+        "phone": "15397294795",
+        "id": "10033",
+        "event_num": "SJ100033",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.239598,
+          30.527546
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10034,
+      "properties": {
+        "name": "刮擦",
+        "level": 1,
+        "car_num": "鄂A141430",
+        "phone": "18642628023",
+        "id": "10034",
+        "event_num": "SJ100034",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.295254,
+          30.593146
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10035,
+      "properties": {
+        "name": "交通拥堵",
+        "level": 2,
+        "car_num": "鄂A779771",
+        "phone": "14758195163",
+        "id": "10035",
+        "event_num": "SJ100035",
+        "area": "区域4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.318593,
+          30.528549
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10036,
+      "properties": {
+        "name": "追尾",
+        "level": 1,
+        "car_num": "鄂A646787",
+        "phone": "15375648083",
+        "id": "10036",
+        "event_num": "SJ100036",
+        "area": "区域3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.247073,
+          30.479898
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10037,
+      "properties": {
+        "name": "追尾",
+        "level": 1,
+        "car_num": "鄂A259963.99999999997",
+        "phone": "13226249553",
+        "id": "10037",
+        "event_num": "SJ100037",
+        "area": "区域5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.375108,
+          30.503779
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10038,
+      "properties": {
+        "name": "交通拥堵",
+        "level": 2,
+        "car_num": "鄂A790232",
+        "phone": "14731795011",
+        "id": "10038",
+        "event_num": "SJ100038",
+        "area": "区域5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.341593,
+          30.642198
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10039,
+      "properties": {
+        "name": "碰撞",
+        "level": 1,
+        "car_num": "鄂A478387",
+        "phone": "18872148404",
+        "id": "10039",
+        "event_num": "SJ100039",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.220545,
+          30.64603
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10040,
+      "properties": {
+        "name": "交通拥堵",
+        "level": 3,
+        "car_num": "鄂A876389",
+        "phone": "15368521488",
+        "id": "10040",
+        "event_num": "SJ100040",
+        "area": "区域5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.400314,
+          30.461449
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10041,
+      "properties": {
+        "name": "碰撞",
+        "level": 1,
+        "car_num": "鄂A274642",
+        "phone": "14733661010",
+        "id": "10041",
+        "event_num": "SJ100041",
+        "area": "区域4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.290315,
+          30.451508
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10042,
+      "properties": {
+        "name": "车辆故障",
+        "level": 3,
+        "car_num": "鄂A175865",
+        "phone": "13229520354",
+        "id": "10042",
+        "event_num": "SJ100042",
+        "area": "区域1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.417759,
+          30.548569
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10043,
+      "properties": {
+        "name": "刮擦",
+        "level": 3,
+        "car_num": "鄂A114879",
+        "phone": "15858035934",
+        "id": "10043",
+        "event_num": "SJ100043",
+        "area": "区域3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.376839,
+          30.456796
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10044,
+      "properties": {
+        "name": "车辆故障",
+        "level": 2,
+        "car_num": "鄂A368989",
+        "phone": "15117070065",
+        "id": "10044",
+        "event_num": "SJ100044",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.434614,
+          30.597781
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10045,
+      "properties": {
+        "name": "追尾",
+        "level": 3,
+        "car_num": "鄂A106092",
+        "phone": "18756371113",
+        "id": "10045",
+        "event_num": "SJ100045",
+        "area": "区域4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.231555,
+          30.633758
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10046,
+      "properties": {
+        "name": "碰撞",
+        "level": 1,
+        "car_num": "鄂A622894",
+        "phone": "13644982566",
+        "id": "10046",
+        "event_num": "SJ100046",
+        "area": "区域4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.418507,
+          30.639994
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10047,
+      "properties": {
+        "name": "车辆故障",
+        "level": 3,
+        "car_num": "鄂A192784",
+        "phone": "15084321820",
+        "id": "10047",
+        "event_num": "SJ100047",
+        "area": "区域1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.281235,
+          30.499203
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10048,
+      "properties": {
+        "name": "车辆故障",
+        "level": 2,
+        "car_num": "鄂A669544",
+        "phone": "15002401339",
+        "id": "10048",
+        "event_num": "SJ100048",
+        "area": "区域2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.320899,
+          30.514958
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10049,
+      "properties": {
+        "name": "追尾",
+        "level": 2,
+        "car_num": "鄂A119603",
+        "phone": "13876034104",
+        "id": "10049",
+        "event_num": "SJ100049",
+        "area": "区域3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.345234,
+          30.533433
+        ]
+      }
+    }
+  ]
+}

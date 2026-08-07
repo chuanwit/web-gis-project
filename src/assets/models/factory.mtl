@@ -1,0 +1,8 @@
+# Material Library for factory.obj
+newmtl factorymat
+Ka 0.2 0.25 0.3
+Kd 0.55 0.65 0.72
+Ks 0.3 0.3 0.3
+Ns 40
+d 1.0
+illum 2
