@@ -1,6 +1,6 @@
 // 统一时间轴(代理到 Pinia time store, 保持老组件接口不变)
 // 老接口: { state: {hour, playing}, period, PERIOD_LABELS, setHour, togglePlaying }
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import { useTimeStore, hourToPeriod, PERIOD_LABELS } from '@/stores/time'
 
 export { hourToPeriod, PERIOD_LABELS }
@@ -24,7 +24,9 @@ export function useTimeOfDay() {
   })
   return {
     state,
-    period: store.period, // computed ref
+    // 用 computed 包装, 保持 period 为 ComputedRef(响应式)
+    // 直接用 store.period 会被 Pinia 自动解包为字符串, 丢失响应式
+    period: computed(() => store.period),
     PERIOD_LABELS,
     setHour: (h) => store.setHour(h),
     togglePlaying: () => store.togglePlaying(),

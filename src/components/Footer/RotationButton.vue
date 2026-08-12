@@ -20,8 +20,8 @@ import globeIcon from '@/assets/icons/globe.svg'
 
 const sceneMap = useSceneMap()
 
-// 是否处于自转状态, 初始为自转中
-const isRotating = ref(true)
+// 是否处于自转状态, 初始不自转(城市视角无需自转, 避免 L7 图层在 globe 旋转时漂移)
+const isRotating = ref(false)
 
 // 保存地图实例与 moveend 监听函数, 便于移除, 避免重复注册导致自转加速
 let mapInstance = null
@@ -73,13 +73,12 @@ function handleRotation() {
   }
 }
 
-// 等地图初始化完成后再启动初始自转
+// 等地图初始化完成后再启动初始自转(仅在 isRotating 为 true 时启动)
 watch(sceneMap, (val) => {
   if (!val) return
-
   const { map } = val
   mapInstance = map
-  startRotation(map)
+  if (isRotating.value) startRotation(map)
 })
 
 // 组件卸载时移除监听, 避免内存泄漏

@@ -92,6 +92,29 @@ watch(sceneMap, async (val) => {
   // 依据当前时间轴时段初始化(天空/建筑灯光/道路拥堵)
   sceneReady = true
   await applyDigitalTwin(scene, map)
+
+  // 地球视角(zoom<5)隐藏所有 L7 图层, 避免 globe 旋转时道路/建筑漂移
+  let lastGlobeMode = false
+  map.on('zoom', () => {
+    const isGlobe = map.getZoom() < 5
+    if (isGlobe === lastGlobeMode) return
+    lastGlobeMode = isGlobe
+    const layers = scene.getLayers()
+    if (isGlobe) {
+      // 进入地球视角: 隐藏全部 L7 图层(道路/建筑/区域等), 仅保留 Mapbox 底图
+      layers.forEach((l) => l.hide())
+    } else {
+      // 回到城市视角: 恢复全部图层(不依赖实例变量, HMR 也可靠), 再按业务校正
+      layers.forEach((l) => l.show())
+      applyToggles(scene, map)
+      // 轻量业务校正(不调 applyBusinessModule, 避免其内部 flyTo 打断用户缩放)
+      setRegionsVisible(scene, business.module !== 'overview')
+      setResourcesVisible(scene, business.module === 'resource')
+      setFlylineVisible(scene, business.module === 'overview')
+      // 强制场景重绘, 确保恢复的图层立即渲染
+      scene.render && scene.render()
+    }
+  })
 })
 
 // 业务模块切换: 联动地图视角 + 区域/资源图层显隐
@@ -213,8 +236,9 @@ async function applyDigitalTwin(scene, map) {
 }
 
 // 时段 → 天空/大气配置(Mapbox setFog; setSky 仅 v3+ 支持, v2 安全跳过)
-// 注意: 不使用 setLight — 在 globe 投影下 setLight(anchor:'map') 会在地球表面
+// 注意: 不使用 setLight(anchor:'map') — 在 globe 投影下会在地球表面
 //       产生固定的昼夜分界线, 导致一个半球过暗不可见
+//       但 setLight(anchor:'viewport') 是安全的, 光源跟随视角移动
 const PERIOD_SKY = {
   morning: {
     fog: {
@@ -225,6 +249,7 @@ const PERIOD_SKY = {
       range: [2, 12],
       'star-intensity': 0.5, // 晨曦中可见残星
     },
+    light: { color: '#fff4e0', intensity: 0.3 }, // 暖光
   },
   afternoon: {
     fog: {
@@ -235,6 +260,7 @@ const PERIOD_SKY = {
       range: [2, 14],
       'star-intensity': 0.3, // 白天微弱星光
     },
+    light: { color: '#ffffff', intensity: 0.5 }, // 明亮白光
   },
   dusk: {
     fog: {
@@ -245,27 +271,36 @@ const PERIOD_SKY = {
       range: [1.5, 10],
       'star-intensity': 0.7, // 暮色中星光渐亮
     },
+    light: { color: '#ff9966', intensity: 0.4 }, // 橙色暮光
   },
   night: {
     fog: {
-      color: '#0a1929', // 幽蓝地平线(模拟加载初始化背景)
+      color: '#0a1929', // 幽蓝地平线
       'high-color': '#0d2540', // 深蓝高空
       'horizon-blend': 0.3,
-      'space-color': '#0a1929', // 幽蓝太空(与加载背景一致)
+      'space-color': '#050b18', // 极深太空
       range: [1.5, 10],
-      'star-intensity': 0.9, // 繁星闪烁(fog 内置, 正确渲染在太空而非地球表面)
+      'star-intensity': 0.9, // 繁星闪烁
     },
+    light: { color: '#4a6fa5', intensity: 0.15 }, // 微弱蓝光
   },
 }
 
-// 应用天空/大气效果(mapbox setFog; setSky 仅 v3+ 支持, v2 自动跳过)
+// 应用天空/大气效果(mapbox setFog + setLight 辅助)
 function applySky(map) {
   if (!map) return
-  const { fog } = PERIOD_SKY[period.value] || PERIOD_SKY.morning
+  const cfg = PERIOD_SKY[period.value] || PERIOD_SKY.morning
+  console.log('[SmartCity] applySky 时段:', period.value, '| fog color:', cfg.fog.color)
   try {
-    map.setFog(fog)
+    map.setFog(cfg.fog)
   } catch (e) {
-    // setFog 在某些底图样式下可能不可用, 忽略
+    console.warn('[SmartCity] setFog 失败:', e.message)
+  }
+  // 辅助: 视口光源(影响 3D 建筑亮度, 不影响地球表面昼夜分界)
+  try {
+    map.setLight({ anchor: 'viewport', color: cfg.light.color, intensity: cfg.light.intensity })
+  } catch (e) {
+    // setLight 在某些场景可能不可用, 忽略
   }
 }
 </script>

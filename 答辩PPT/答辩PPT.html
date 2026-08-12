@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>智慧城市交通指挥中心 - 专业实习答辩</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+/* ============================================================
+   学术答辩PPT - 简洁商务风格
+   主色调：深蓝 #1a3a5c（庄重）、青蓝 #2e86ab（专业）、金 #c6a15b（强调）
+   辅色：浅灰背景 #f4f6f9、深文字 #1f2d3d
+   字体：思源黑体 / 微软雅黑 无衬线
+   ============================================================ */
+  :root {
+    --c-primary: #1a3a5c;     /* 主色: 深蓝 庄重 */
+    --c-secondary: #2e86ab;   /* 辅色: 青蓝 专业 */
+    --c-accent: #c6a15b;      /* 强调: 金 正式 */
+    --c-bg: #f4f6f9;          /* 背景: 浅灰 */
+    --c-bg-dark: #0f2138;     /* 深色底: 封面/封底 */
+    --c-text: #1f2d3d;        /* 正文文字 */
+    --c-text-light: #4a5568;  /* 次级文字 */
+    --c-border: #e2e8f0;      /* 分隔线 */
+    --font-main: "思源黑体 CN", "Microsoft YaHei", "PingFang SC", "Source Han Sans CN", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #2d3748;
+    font-family: var(--font-main);
+    color: var(--c-text);
+    overflow: hidden;
+  }
+
+  /* 演示容器: 16:9 固定比例 */
+  .deck {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1280px;
+    height: 720px;
+    background: var(--c-bg);
+    box-shadow: 0 10px 60px rgba(0,0,0,.4);
+    overflow: hidden;
+  }
+
+  /* 单页 slide */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    padding: 60px 80px;
+    opacity: 0;
+    transition: opacity .4s ease;
+  }
+  .slide.active { display: flex; opacity: 1; }
+
+  /* ---------- 通用标题栏 ---------- */
+  .slide-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--c-border);
+  }
+  .slide-num {
+    width: 56px; height: 56px;
+    background: var(--c-primary);
+    color: var(--c-accent);
+    font-size: 24px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .slide-title-box { flex: 1; }
+  .slide-title {
+    font-size: 32px; font-weight: 700;
+    color: var(--c-primary);
+    letter-spacing: 1px;
+  }
+  .slide-subtitle {
+    font-size: 14px; color: var(--c-text-light);
+    margin-top: 6px; letter-spacing: .5px;
+  }
+  .slide-en {
+    font-size: 12px;
+    color: var(--c-secondary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ---------- 页码 ---------- */
+  .page-foot {
+    position: absolute;
+    bottom: 24px;
+    left: 80px; right: 80px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; color: var(--c-text-light);
+    border-top: 1px solid var(--c-border);
+    padding-top: 10px;
+  }
+  .page-foot .logo-small {
+    color: var(--c-primary); font-weight: 700;
+    font-size: 12px; letter-spacing: 1px;
+  }
+
+  /* 正文内容区 */
+  .content { flex: 1; display: flex; flex-direction: column; gap: 24px; min-height: 0; }
+  .content-grid { flex: 1; display: grid; gap: 32px; min-height: 0; }
+
+  /* 段落文本 */
+  .p { font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  .p b { color: var(--c-primary); font-weight: 700; }
+  .p .hl { color: var(--c-accent); font-weight: 700; }
+
+  /* 列表 */
+  .ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .ul > li {
+    position: relative;
+    padding-left: 24px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--c-text);
+  }
+  .ul > li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 11px;
+    width: 10px; height: 10px;
+    background: var(--c-accent);
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+  .ul > li b { color: var(--c-primary); }
+
+  /* 二级列表 */
+  .ul .ul { margin-top: 10px; gap: 8px; }
+  .ul .ul > li {
+    padding-left: 18px;
+    font-size: 14px;
+    color: var(--c-text-light);
+  }
+  .ul .ul > li::before {
+    width: 6px; height: 6px;
+    background: var(--c-secondary);
+    border-radius: 50%;
+    clip-path: none;
+    top: 9px;
+  }
+
+  /* 卡片组 */
+  .cards { display: grid; gap: 20px; }
+  .card {
+    background: #fff;
+    border: 1px solid var(--c-border);
+    border-top: 4px solid var(--c-secondary);
+    border-radius: 6px;
+    padding: 22px 26px;
+    box-shadow: 0 2px 8px rgba(26, 58, 92, .06);
+  }
+  .card-title {
+    font-size: 18px; font-weight: 700;
+    color: var(--c-primary);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-title .ico {
+    width: 28px; height: 28px;
+    background: var(--c-primary);
+    color: var(--c-accent);
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 4px;
+    font-size: 14px; font-weight: 700;
+  }
+  .card-body { font-size: 14px; line-height: 1.8; color: var(--c-text-light); }
+
+  /* 占位图片 */
+  .img-ph {
+    background:
+      repeating-linear-gradient(45deg, #edf2f7, #edf2f7 10px, #e2e8f0 10px, #e2e8f0 20px);
+    border: 2px dashed var(--c-secondary);
+    border-radius: 6px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--c-secondary);
+    font-size: 14px;
+    gap: 8px;
+    min-height: 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  .img-ph::before {
+    content: '📷';
+    font-size: 36px;
+    opacity: .5;
+  }
+  .img-ph .ph-label {
+    background: rgba(46, 134, 171, .9);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-size: 12px;
+    max-width: 90%;
+    text-align: center;
+  }
+  .img-ph .ph-tip {
+    font-size: 11px;
+    color: var(--c-text-light);
+    margin-top: 2px;
+  }
+
+  /* 表格 */
+  .tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .tbl th {
+    background: var(--c-primary);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: .5px;
+  }
+  .tbl td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--c-border);
+    color: var(--c-text);
+    line-height: 1.6;
+  }
+  .tbl tr:nth-child(even) td { background: #f9fafb; }
+  .tbl td .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .tag-pri { background: rgba(26, 58, 92, .1); color: var(--c-primary); }
+  .tag-sec { background: rgba(46, 134, 171, .12); color: var(--c-secondary); }
+  .tag-acc { background: rgba(198, 161, 91, .15); color: var(--c-accent); }
+
+  /* 时间线 */
+  .timeline {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding: 20px 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 40px; left: 40px; right: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--c-primary), var(--c-secondary), var(--c-accent));
+    border-radius: 2px;
+  }
+  .tl-item {
+    display: flex; flex-direction: column; align-items: center;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    gap: 12px;
+  }
+  .tl-dot {
+    width: 24px; height: 24px;
+    background: #fff;
+    border: 4px solid var(--c-primary);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px var(--c-bg);
+  }
+  .tl-item:nth-child(2) .tl-dot { border-color: var(--c-secondary); }
+  .tl-item:nth-child(3) .tl-dot { border-color: var(--c-secondary); }
+  .tl-item:nth-child(4) .tl-dot { border-color: var(--c-accent); }
+  .tl-date {
+    font-size: 12px;
+    color: var(--c-text-light);
+    font-weight: 600;
+  }
+  .tl-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-primary);
+    text-align: center;
+    max-width: 140px;
+  }
+  .tl-desc {
+    font-size: 12px;
+    color: var(--c-text-light);
+    text-align: center;
+    line-height: 1.5;
+    max-width: 160px;
+  }
+
+  /* ============================================================
+     各页面专属样式
+     ============================================================ */
+
+  /* P1 封面 */
+  .s-cover {
+    background: linear-gradient(135deg, var(--c-bg-dark) 0%, var(--c-primary) 60%, #254a7a 100%);
+    color: #fff;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .s-cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(46, 134, 171, .3) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(198, 161, 91, .15) 0%, transparent 35%);
+  }
+  .s-cover::after {
+    content: '';
+    position: absolute;
+    right: -100px; top: -100px;
+    width: 500px; height: 500px;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 50%;
+  }
+  .cover-inner {
+    position: relative; z-index: 1;
+    height: 100%;
+    display: flex; flex-direction: column;
+    padding: 80px;
+  }
+  .cover-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+  .cover-school {
+    font-size: 22px; font-weight: 600;
+    color: rgba(255,255,255,.85);
+    letter-spacing: 4px;
+  }
+  .cover-logo {
+    width: 80px; height: 80px;
+    border: 2px solid var(--c-accent);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    color: var(--c-accent);
+    font-size: 28px; font-weight: 800;
+    background: rgba(198, 161, 91, .1);
+  }
+  .cover-main { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .cover-tag {
+    display: inline-block;
+    padding: 6px 18px;
+    border: 1px solid rgba(198, 161, 91, .5);
+    color: var(--c-accent);
+    font-size: 14px;
+    letter-spacing: 3px;
+    width: fit-content;
+    margin-bottom: 28px;
+    background: rgba(198, 161, 91, .08);
+  }
+  .cover-title {
+    font-size: 56px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 18px;
+    letter-spacing: 4px;
+    text-shadow: 0 2px 20px rgba(0,0,0,.3);
+  }
+  .cover-sub {
+    font-size: 20px;
+    color: rgba(255,255,255,.7);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .cover-en {
+    font-size: 14px;
+    color: rgba(46, 134, 171, .9);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .cover-divider {
+    width: 120px; height: 3px;
+    background: linear-gradient(90deg, var(--c-accent), transparent);
+    margin: 36px 0 40px;
+  }
+  .cover-info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px 30px;
+    align-items: center;
+    font-size: 16px;
+  }
+  .cover-info .k { color: var(--c-accent); letter-spacing: 2px; }
+  .cover-info .v { color: rgba(255,255,255,.9); font-weight: 500; }
+  .cover-date {
+    position: absolute;
+    bottom: 40px; right: 80px;
+    font-size: 14px;
+    color: rgba(255,255,255,.4);
+    letter-spacing: 2px;
+  }
+
+  /* P2 目录 */
+  .s-toc .toc-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+  .toc-item {
+    display: flex; align-items: center; gap: 22px;
+    padding: 24px 28px;
+    background: #fff;
+    border-radius: 8px;
+    border-left: 5px solid var(--c-secondary);
+    box-shadow: 0 2px 10px rgba(26,58,92,.06);
+    transition: all .2s;
+  }
+  .toc-item:nth-child(odd) { border-left-color: var(--c-primary); }
+  .toc-item:nth-child(3n) { border-left-color: var(--c-accent); }
+  .toc-num {
+    width: 52px; height: 52px;
+    background: var(--c-primary);
+    color: var(--c-accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 800;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .toc-item:nth-child(even) .toc-num { background: var(--c-secondary); color: #fff; }
+  .toc-item:nth-child(3n) .toc-num { background: var(--c-accent); color: var(--c-primary); }
+  .toc-body { flex: 1; }
+  .toc-name { font-size: 20px; font-weight: 700; color: var(--c-primary); margin-bottom: 4px; }
+  .toc-en { font-size: 12px; color: var(--c-text-light); letter-spacing: 1.5px; }
+
+  /* P3 项目背景 */
+  .bg-stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 28px; }
+  .bg-stat {
+    background: #fff;
+    border-radius: 8px;
+    padding: 22px 20px;
+    border-top: 4px solid var(--c-accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  }
+  .bg-stat .n {
+    font-size: 34px; font-weight: 800;
+    color: var(--c-primary);
+    line-height: 1;
+  }
+  .bg-stat .n span { font-size: 16px; color: var(--c-secondary); margin-left: 2px; }
+  .bg-stat .d { font-size: 13px; color: var(--c-text-light); margin-top: 10px; line-height: 1.5; }
+
+  /* P4 需求分析 */
+  .req-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .req-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 26px;
+    border: 1px solid var(--c-border);
+    position: relative;
+  }
+  .req-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 60px; height: 4px;
+    background: var(--c-primary);
+    border-radius: 0 0 4px 0;
+  }
+  .req-func .req-card:nth-child(even)::before { background: var(--c-secondary); }
+  .req-card h4 {
+    font-size: 18px; font-weight: 700;
+    color: var(--c-primary);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--c-border);
+  }
+  .req-card ul { padding-left: 0; }
+  .req-card li {
+    font-size: 14px; line-height: 1.8;
+    color: var(--c-text-light);
+    margin-bottom: 4px;
+    padding-left: 14px;
+    position: relative;
+    list-style: none;
+  }
+  .req-card li::before {
+    content: '✓';
+    position: absolute; left: 0;
+    color: var(--c-secondary);
+    font-weight: 700;
+  }
+
+  /* P5 方案设计 - 架构图占位 */
+  .arch-layout { display: grid; grid-template-rows: auto 1fr; gap: 24px; }
+  .arch-total {
+    min-height: 260px;
+  }
+  .arch-sub {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  }
+
+  /* P6 技术栈对比表 */
+  .tech-wrap { display: grid; grid-template-columns: 2fr 1fr; gap: 28px; align-items: start; }
+
+  /* P7 实施过程 时间线 + 详情 */
+  .impl-top { display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; }
+
+  /* P8 成果展示 - 四宫格截图占位 */
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    flex: 1;
+  }
+  .res-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--c-border);
+    display: flex; flex-direction: column;
+  }
+  .res-img { min-height: 170px; border-bottom: 1px solid var(--c-border); }
+  .res-caption {
+    padding: 12px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .res-caption .name { font-size: 15px; font-weight: 700; color: var(--c-primary); }
+  .res-caption .desc { font-size: 12px; color: var(--c-text-light); }
+
+  /* P9 创新点 */
+  .inn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .inn-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 28px 24px;
+    position: relative;
+    border: 1px solid var(--c-border);
+    box-shadow: 0 2px 10px rgba(0,0,0,.04);
+  }
+  .inn-num {
+    position: absolute;
+    top: -16px; left: 24px;
+    width: 36px; height: 36px;
+    background: var(--c-accent);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-weight: 800; font-size: 18px;
+    box-shadow: 0 4px 10px rgba(198, 161, 91, .3);
+  }
+  .inn-title {
+    font-size: 20px; font-weight: 700;
+    color: var(--c-primary);
+    margin: 10px 0 16px;
+  }
+  .inn-body { font-size: 13px; line-height: 1.8; color: var(--c-text-light); }
+  .inn-body b { color: var(--c-secondary); }
+
+  /* P10 总结与展望 */
+  .sum-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  .sum-col {
+    background: #fff;
+    border-radius: 8px;
+    padding: 28px 30px;
+    border-top: 5px solid var(--c-primary);
+  }
+  .sum-col.future { border-top-color: var(--c-accent); }
+  .sum-col h3 {
+    font-size: 22px; font-weight: 700;
+    color: var(--c-primary);
+    margin-bottom: 22px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .sum-col.future h3 { color: var(--c-accent); }
+  .sum-col .ico-big {
+    width: 40px; height: 40px;
+    background: var(--c-primary);
+    color: var(--c-accent);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800;
+  }
+  .sum-col.future .ico-big { background: var(--c-accent); color: #fff; }
+
+  /* P11 致谢 */
+  .s-thanks {
+    background: linear-gradient(135deg, var(--c-bg-dark) 0%, var(--c-primary) 100%);
+    color: #fff;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .s-thanks::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(46, 134, 171, .25), transparent 45%),
+      radial-gradient(circle at 70% 70%, rgba(198, 161, 91, .18), transparent 40%);
+  }
+  .thanks-inner { position: relative; z-index: 1; }
+  .thanks-zh {
+    font-size: 96px;
+    font-weight: 800;
+    color: var(--c-accent);
+    letter-spacing: 30px;
+    margin-bottom: 30px;
+    padding-left: 30px;
+    text-shadow: 0 4px 30px rgba(198, 161, 91, .3);
+  }
+  .thanks-en {
+    font-size: 28px;
+    color: rgba(255,255,255,.7);
+    letter-spacing: 8px;
+    margin-bottom: 60px;
+    font-weight: 300;
+  }
+  .thanks-msg {
+    max-width: 680px;
+    margin: 0 auto 50px;
+    font-size: 16px;
+    line-height: 2.2;
+    color: rgba(255,255,255,.8);
+  }
+  .thanks-contact {
+    font-size: 13px;
+    color: rgba(255,255,255,.4);
+    letter-spacing: 2px;
+  }
+
+  /* 控制按钮 */
+  .ctl {
+    position: fixed;
+    bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 8px;
+    background: rgba(0,0,0,.6);
+    backdrop-filter: blur(8px);
+    padding: 8px 14px;
+    border-radius: 24px;
+    z-index: 100;
+  }
+  .ctl button {
+    background: none; border: none;
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: var(--font-main);
+    transition: background .2s;
+  }
+  .ctl button:hover { background: rgba(255,255,255,.15); }
+  .ctl .pg { color: var(--c-accent); font-weight: 700; padding: 6px 10px; font-size: 13px; }
+  .k { display: inline-block; padding: 1px 6px; border: 1px solid rgba(255,255,255,.4); border-radius: 3px; font-size: 11px; color: rgba(255,255,255,.7); }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- ========== P1 封面 ========== -->
+<div class="slide s-cover active" data-title="封面">
+  <div class="cover-inner">
+    <div class="cover-top">
+      <div class="cover-school">武 汉 轻 工 大 学</div>
+      <div class="cover-logo">WHPU</div>
+    </div>
+    <div class="cover-main">
+      <div class="cover-tag">专 业 实 习 答 辩</div>
+      <h1 class="cover-title">智慧城市交通指挥中心</h1>
+      <div class="cover-sub">基于数字孪生与大模型的交通态势综合管控平台</div>
+      <div class="cover-en">SMART CITY · INTELLIGENT TRAFFIC MANAGEMENT PLATFORM</div>
+      <div class="cover-divider"></div>
+      <div class="cover-info">
+        <span class="k">答辩人：</span><span class="v">___（填写姓名）___</span>
+        <span class="k">学　号：</span><span class="v">___（填写学号）___</span>
+        <span class="k">专　业：</span><span class="v">___（填写专业）___</span>
+        <span class="k">指导教师：</span><span class="v">___（填写教师）___</span>
+        <span class="k">实习单位：</span><span class="v">___（填写单位）___</span>
+        <span class="k">答辩日期：</span><span class="v">2026 年 8 月</span>
+      </div>
+    </div>
+    <div class="cover-date">PROFESSIONAL PRACTICE DEFENSE</div>
+  </div>
+</div>
+
+<!-- ========== P2 目录 ========== -->
+<div class="slide s-toc" data-title="目录导航">
+  <div class="slide-header">
+    <div class="slide-num">0</div>
+    <div class="slide-title-box">
+      <div class="slide-title">目 录 导 航</div>
+      <div class="slide-subtitle">Contents · 本报告共 10 个章节 · 预计 15 分钟</div>
+    </div>
+    <div class="slide-en">CONTENTS</div>
+  </div>
+  <div class="content">
+    <ul class="toc-list">
+      <li class="toc-item"><div class="toc-num">1</div><div class="toc-body"><div class="toc-name">项目背景与意义</div><div class="toc-en">Project Background</div></div></li>
+      <li class="toc-item"><div class="toc-num">2</div><div class="toc-body"><div class="toc-name">需求分析</div><div class="toc-en">Requirement Analysis</div></div></li>
+      <li class="toc-item"><div class="toc-num">3</div><div class="toc-body"><div class="toc-name">方案设计</div><div class="toc-en">Architecture & Design</div></div></li>
+      <li class="toc-item"><div class="toc-num">4</div><div class="toc-body"><div class="toc-name">技术选型</div><div class="toc-en">Technology Stack</div></div></li>
+      <li class="toc-item"><div class="toc-num">5</div><div class="toc-body"><div class="toc-name">实施过程</div><div class="toc-en">Implementation Process</div></div></li>
+      <li class="toc-item"><div class="toc-num">6</div><div class="toc-body"><div class="toc-name">成果展示</div><div class="toc-en">Results Display</div></div></li>
+      <li class="toc-item"><div class="toc-num">7</div><div class="toc-body"><div class="toc-name">创新点</div><div class="toc-en">Innovation Points</div></div></li>
+      <li class="toc-item"><div class="toc-num">8</div><div class="toc-body"><div class="toc-name">总结与展望</div><div class="toc-en">Summary & Future</div></div></li>
+      <li class="toc-item"><div class="toc-num">9</div><div class="toc-body"><div class="toc-name">致　谢</div><div class="toc-en">Acknowledgement</div></div></li>
+    </ul>
+  </div>
+  <div class="page-foot"><div class="logo-small">SMART CITY · WUHAN</div><div>目录导航 　/　 02</div></div>
+</div>
+
+<!-- ========== P3 项目背景与意义 ========== -->
+<div class="slide" data-title="项目背景与意义">
+  <div class="slide-header">
+    <div class="slide-num">1</div>
+    <div class="slide-title-box">
+      <div class="slide-title">项 目 背 景 与 意 义</div>
+      <div class="slide-subtitle">为什么要做智慧城市交通管控平台？</div>
+    </div>
+    <div class="slide-en">Background</div>
+  </div>
+  <div class="content">
+    <!-- 关键数据 -->
+    <div class="bg-stat-cards">
+      <div class="bg-stat"><div class="n">400<span>+</span></div><div class="d">中国地级市拥堵指数<br>平均增长 3.2%（2025）</div></div>
+      <div class="bg-stat"><div class="n">1.2<span>亿</span></div><div class="d">武汉市常住人口<br>机动车保有量突破 420 万</div></div>
+      <div class="bg-stat"><div class="n">30<span>%</span></div><div class="d">高峰时段交通事件<br>平均响应时长 ≥ 30 分钟</div></div>
+      <div class="bg-stat"><div class="n">85<span>%</span></div><div class="d">用户期望 AI 辅助决策<br>传统大屏仅能可视化展示</div></div>
+    </div>
+
+    <div class="content-grid" style="grid-template-columns: 1fr 1fr;">
+      <div>
+        <h3 style="font-size: 18px; color: var(--c-primary); margin-bottom: 14px;">▎ 项目背景</h3>
+        <ul class="ul">
+          <li><b>城镇化进程加速</b>：城市交通系统日趋复杂，传统人工调度效率低下，亟需数字化转型</li>
+          <li><b>交通事件响应滞后</b>：事故发现、资源调度、路径分流多环节割裂，处置效率偏低</li>
+          <li><b>数据孤岛问题</b>：交通、资源、气象等数据分散，缺乏统一研判与综合态势展示</li>
+          <li><b>决策支持不足</b>：传统大屏仅"看得见"，无法基于大模型"判得准、发得出、调得动"</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size: 18px; color: var(--c-primary); margin-bottom: 14px;">▎ 研究意义</h3>
+        <ul class="ul">
+          <li><b>理论意义</b>：探索数字孪生、大模型与 GIS 可视化深度融合的技术范式</li>
+          <li><b>应用价值</b>：构建<b>"感知—诊断—调度—推演"</b>全链路业务闭环，实现可落地实战</li>
+          <li><b>示范推广</b>：可快速复制到其他城市/领域，为智慧城市建设提供参考模板</li>
+          <li><b>工程能力</b>：从 0 到 1 完成真实项目全流程，覆盖前端、后端、AI 与运维部署</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="page-foot"><div class="logo-small">SMART CITY · WUHAN</div><div>项目背景与意义 　/　 03</div></div>
+</div>
+
+<!-- ========== P4 需求分析 ========== -->
+<div class="slide" data-title="需求分析">
+  <div class="slide-header">
+    <div class="slide-num">2</div>
+    <div class="slide-title-box">
+      <div class="slide-title">需 求 分 析</div>
+      <div class="slide-subtitle">从用户角色到功能需求的全面梳理</div>
+    </div>
+    <div class="slide-en">Requirements</div>
+  </div>
+  <div class="content">
+    <div class="cards" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="card">
+        <div class="card-title"><span class="ico">A</span>指挥员角色</div>
+        <div class="card-body">全局态势感知、应急资源可视化调度、情景推演与预案对比、一键发布调度指令</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">B</span>分析员角色</div>
+        <div class="card-body">风险诊断与趋势分析、区域风险排行、事件类型分布、资源覆盖率评估</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">C</span>管理员角色</div>
+        <div class="card-body">系统配置管理、图层开关、地图视角复位、AI 模型参数与密钥管理</div>
+      </div>
+    </div>
+
+    <div class="req-grid req-func" style="grid-template-columns: repeat(2, 1fr);">
+      <div class="req-card">
+        <h4>◎ 功能性需求</h4>
+        <ul>
+          <li>三维数字孪生地图（建筑/路网/区域/资源）</li>
+          <li>综合态势展示（飞线、热力、散点、气象）</li>
+          <li>交通风险诊断（雷达图、类型分布、排行）</li>
+          <li>应急资源可达分析（服务半径、覆盖率）</li>
+          <li>情景推演优化（策略勾选、指标预估、模拟）</li>
+          <li>AI 智能助手（自然语言查询、流式响应、溯源）</li>
+          <li>交互工具（拉框分析、测量、路径规划）</li>
+          <li>数字孪生时段联动（早/午/黄昏/夜四时段）</li>
+        </ul>
+      </div>
+      <div class="req-card">
+        <h4>◎ 非功能性需求</h4>
+        <ul>
+          <li><b>性能</b>：地图图层首屏渲染 ≤ 3 秒；交互响应 ≤ 300ms</li>
+          <li><b>可用性</b>：数据接口降级容错，AI 服务双模式兜底</li>
+          <li><b>兼容性</b>：Chrome 90+、Edge 90+；1920×1080 及以上</li>
+          <li><b>安全</b>：API Key 服务器端存储，前端不可见密钥</li>
+          <li><b>可扩展</b>：Pinia 状态中枢，模块松耦合，便于新增业务</li>
+          <li><b>视觉</b>：科技感统一风格，无障碍配色（对比度 ≥ 4.5:1）</li>
+          <li><b>可部署</b>：前端 Nginx 静态托管 + PM2 后端守护</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="page-foot"><div class="logo-small">SMART CITY · WUHAN</div><div>需求分析 　/　 04</div></div>
+</div>
+
+<!-- ========== P5 方案设计 - 整体架构 ========== -->
+<div class="slide" data-title="方案设计">
+  <div class="slide-header">
+    <div class="slide-num">3</div>
+    <div class="slide-title-box">
+      <div class="slide-title">方 案 设 计 · 整 体 架 构</div>
+      <div class="slide-subtitle">四层架构：数据层 → 服务层 → 状态层 → 表现层</div>
+    </div>
+    <div class="slide-en">Architecture</div>
+  </div>
+  <div class="content arch-layout">
+    <!-- 整体架构图占位 -->
+    <div class="img-ph arch-total">
+      <div class="ph-label">【插入：系统整体架构图】— 建议用四层结构图</div>
+      <div class="ph-tip">从上至下：表现层（组件/面板）、状态层（Pinia Stores）、服务层（Express/AI/Mock）、数据层（JSON/Mapbox）</div>
+    </div>
+    <!-- 三层子模块占位 -->
+    <div class="arch-sub">
+      <div class="img-ph">
+        <div class="ph-label">【插入：数据层数据流图】</div>
+        <div class="ph-tip">Mock GeoJSON / API → 请求层 → 降级容错 → Stores</div>
+      </div>
+      <div class="img-ph">
+        <div class="ph-label">【插入：AI 服务架构图】</div>
+        <div class="ph-tip">用户提问 → SSE 流式 → DeepSeek / 规则引擎降级 → 数据溯源</div>
+      </div>
+      <div class="img-ph">
+        <div class="ph-label">【插入：业务闭环流程图】</div>
+        <div class="ph-tip">感知(overview) → 诊断(risk) → 调度(resource) → 推演(simulation)</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-foot"><div class="logo-small">SMART CITY · WUHAN</div><div>方案设计 · 整体架构 　/　 05</div></div>
+</div>
+
+<!-- ========== P5b 业务模块设计 ========== -->
+<div class="slide" data-title="业务模块设计">
+  <div class="slide-header">
+    <div class="slide-num">3</div>
+    <div class="slide-title-box">
+      <div class="slide-title">方 案 设 计 · 业 务 模 块</div>
+      <div class="slide-subtitle">四大业务模块形成完整闭环</div>
+    </div>
+    <div class="slide-en">Business Modules</div>
+  </div>
+  <div class="content">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="width:14%;">业务模块</th>
+          <th style="width:12%;">英文标识</th>
+          <th style="width:26%;">地图/图层表现</th>
+          <th style="width:30%;">面板内容</th>
+          <th style="width:18%;">核心策略</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-pri">综合态势</span></td>
+          <td>overview</td>
+          <td>飞线辐射、热力图、散点、四时段天空变化</td>
+          <td>出行人口、公交客流、人口分布、医院/高校统计</td>
+          <td>全局感知</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-acc">交通风险诊断</span></td>
+          <td>risk</td>
+          <td>区域 3D 多边形挤出（高度=风险值）</td>
+          <td>风险雷达、事件类型分布、区域风险排行、高风险列表</td>
+          <td>定位痛点</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-sec">应急资源可达</span></td>
+          <td>resource</td>
+          <td>资源点图标 + 服务半径圈 + 3D 区域</td>
+          <td>资源类型筛选、覆盖率统计、医院/高校盘点</td>
+          <td>资源调度</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-pri">情景推演优化</span></td>
+          <td>simulation</td>
+          <td>叠加区域 3D + 事件散点，策略变更高亮</td>
+          <td>策略勾选、预估指标卡（风险↓、覆盖↑、恢复时长）</td>
+          <td>决策辅助</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="cards" style="grid-template-columns: repeat(3, 1fr); margin-top: 24px;">
+      <div class="card">
+        <div class="card-title"><span class="ico">1</span>状态中枢</div>
+        <div class="card-body">Pinia Stores 统一管理 time / business / data / ai / layers / map 六维状态，组件解耦通信</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">2</span>数据降级容错</div>
+        <div class="card-body">统一请求封装：首选 API → 失败回退 Mock → 失败回退硬编码默认值，确保大屏永远有数据展示</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico">3</span>AI 双模式</div>
+        <div class="card-body">生产部署接入 DeepSeek 真实大模型；离线场景规则引擎兜底，SSE 流式响应保证体验一致</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-foot"><div class="logo-small">SMART CITY · WUHAN</div><div>方案设计 · 业务模块 　/　 06</div></div>
+</div>
+
+<!-- ========== P6 技术选型 ========== -->
+<div class="slide" data-title="技术选型">
+  <div class="slide-header">
+    <div class="slide-num">4</div>
+    <div class="slide-title-box">
+      <div class="slide-title">技 术 选 型</div>
+      <div class="slide-subtitle">主流成熟技术栈，兼顾工程化与可维护性</div>
+    </div>
+    <div class="slide-en">Tech Stack</div>
+  </div>
+  <div class="content tech-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>分类</th>
+          <th>技术</th>
+          <th>版本</th>
+          <th>选型理由</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-sec">前端框架</span></td>
+          <td><b>Vue 3</b></td>
+          <td>3.5</td>
+          <td>组合式 API、响应式高效、生态成熟</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-sec">构建工具</span></td>
+          <td><b>Vite</b></td>
+          <td>6</td>
+          <td>极速冷启动、原生 ESM、HMR 秒级</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-pri">GIS 可视化</span></td>
+          <td><b>Mapbox GL + AntV L7</b></td>
+          <td>GL 3 / L7 2.22</td>
+          <td>3D 地球、图层生态丰富、飞线/热力开箱即用</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-pri">图表库</span></td>
+          <td><b>ECharts / AntV G2</b></td>
+          <td>5 / 5</td>
+          <td>雷达图、分布图、排行、热力图类型齐全</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-pri">UI 组件</span></td>
+          <td><b>Element Plus</b></td>
+          <td>2.8</td>
+          <td>表格/弹层/按钮等基础组件稳定</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-acc">状态管理</span></td>
+          <td><b>Pinia</b></td>
+          <td>2.2</td>
+          <td>Vue 官方推荐、Devtools、模块化良好</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-acc">后端服务</span></td>
+          <td><b>Express</b></td>
+          <td>4.19</td>
+          <td>轻量、SSE 原生友好、便于快速搭建代理</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-acc">AI 大模型</span></td>
+          <td><b>DeepSeek V3</b></td>
+          <td>V3</td>
+          <td>国产、中文能力强、价格低、SSE 支持</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-sec">部署运维</span></td>
+          <td><b>Nginx + PM2</b></td>
+          <td>最新稳定</td>
+          <td>静态托管、反向代理、进程守护</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="img-ph" style="min-height: 100%;">
+      <div class="ph-label">【插入：技术栈关系结构图】</div>
+      <div class="ph-tip">以 Vue 3 为中心，环形放射展示各技术依赖关系</div>
+    </div>
+  </div>
+  <div class="page-foot"><div class="logo-small">SMART CITY · WUHAN</div><div>技术选型 　/　 07</div></div>
+</div>
+
+<!-- ========== P7 实施过程 ========== -->
+<div class="slide" data-title="实施过程">
+  <div class="slide-header">
+    <div class="slide-num">5</div>
+    <div class="slide-title-box">
+      <div class="slide-title">实 施 过 程</div>
+      <div class="slide-subtitle">分阶段有序推进，每周迭代交付</div>
+    </div>
+    <div class="slide-en">Implementation</div>
+  </div>
+  <div class="content impl-top">
+    <div>
+      <h3 style="font-size: 16px; color: var(--c-primary); margin-bottom: 16px;">▎ 项目进度时间线</h3>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">W1 — W2</div>
+          <div class="tl-title">需求调研 & 架构设计</div>
+          <div class="tl-desc">竞品分析（6份参考）、技术选型、模块拆分、状态中枢设计</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">W3 — W4</div>
+          <div class="tl-title">基础能力 + 数据接入</div>
+          <div class="tl-desc">Pinia Stores、Mapbox 初始化、5 份 mock GeoJSON 数据生成</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">W5 — W7</div>
+          <div class="tl-title">业务闭环 + AI 接入</div>
+          <div class="tl-desc">4 大业务模块面板、Express AI 代理、DeepSeek SSE 流式对话</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">W8</div>
+          <div class="tl-title">可视化增强 + 部署</div>
+          <div class="tl-desc">飞线/3D挤出/时段天空、登录、Nginx+PM2 生产部署</div>
+        </div>
+      </div>
+    </div>
+    <div class="img-ph">
+      <div class="ph-label">【插入：实施流程图或甘特图】</div>
+      <div class="ph-tip">建议用甘特图展示 8 周任务拆分与里程碑</div>
+    </div>
+  </div>
+  <div class="cards" style="grid-template-columns: repeat(4, 1fr); margin-top: 24px;">
+    <div class="card" style="border-top-color: var(--c-primary);">
+      <div class="card-title"><span class="ico">①</span>架构升级</div>
+      <div class="card-body">Pinia 状态中枢、数据降级容错、Loading 启动动画、ScreenScale 大屏自适应</div>
+    </div>
+    <div class="card" style="border-top-color: var(--c-secondary);">
+      <div class="card-title"><span class="ico">②</span>业务闭环</div>
+      <div class="card-body">顶部导航切换、KPI 指标矩阵、8 个业务面板、4 个模块视角飞行联动</div>
+    </div>
+    <div class="card" style="border-top-color: var(--c-accent);">
+      <div class="card-title"><span class="ico">③</span>AI 大模型</div>
+      <div class="card-body">Express 代理、SSE 流式、规则引擎降级、上下文注入、数据溯源卡片</div>
+    </div>
+    <div class="card" style="border-top-color: #2ecc40;">
+      <div class="card-title"><span class="ico">④</span>可视化增强</div>
+      <div class="card-body">飞线辐射动画、区域 3D 挤出、实时天气、动态聚合、时段天空联动</div>
+    </div>
+  </div>
+  <div class="page-foot"><div class="logo-small">SMART CITY · WUHAN</div><div>实施过程 　/　 08</div></div>
+</div>
+
+<!-- ========== P8 成果展示 ========== -->
+<div class="slide" data-title="成果展示">
+  <div class="slide-header">
+    <div class="slide-num">6</div>
+    <div class="slide-title-box">
+      <div class="slide-title">成 果 展 示</div>
+      <div class="slide-subtitle">核心功能界面截图与实际效果</div>
+    </div>
+    <div class="slide-en">Results</div>
+  </div>
+  <div class="content">
+    <div class="result-grid">
+      <div class="res-card">
+        <div class="img-ph res-img">
+          <div class="ph-label">【图 1：综合态势模块（overview）】</div>
+          <div class="ph-tip">飞线辐射 + 时段天空 + KPI 卡片 + 左右图表列</div>
+        </div>
+        <div class="res-caption"><div class="name">综合态势</div><div class="desc">全局感知 · 飞线联动</div></div>
+      </div>
+      <div class="res-card">
+        <div class="img-ph res-img">
+          <div class="ph-label">【图 2：交通风险诊断模块（risk）】</div>
+          <div class="ph-tip">3D 区域挤出 + 雷达图 + 区域风险排行</div>
+        </div>
+        <div class="res-caption"><div class="name">风险诊断</div><div class="desc">3D 挤出 · 多维雷达</div></div>
+      </div>
+      <div class="res-card">
+        <div class="img-ph res-img">
+          <div class="ph-label">【图 3：AI 智能助手抽屉】</div>
+          <div class="ph-tip">SSE 流式响应、快捷问题、数据溯源、打字机动效</div>
+        </div>
+        <div class="res-caption"><div class="name">AI 智能助手</div><div class="desc">流式对话 · 可溯源</div></div>
+      </div>
+      <div class="res-card">
+        <div class="img-ph res-img">
+          <div class="ph-label">【图 4：情景推演 + 拉框查询聚合】</div>
+          <div class="ph-tip">策略勾选、预估指标、框内事件动态统计</div>
+        </div>
+        <div class="res-caption"><div class="name">情景推演 · 拉框分析</div><div class="desc">决策辅助 · 动态聚合</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="page-foot"><div class="logo-small">SMART CITY · WUHAN</div><div>成果展示 　/　 09</div></div>
+</div>
+
+<!-- ========== P8b 成果数据 ========== -->
+<div class="slide" data-title="成果数据">
+  <div class="slide-header">
+    <div class="slide-num">6</div>
+    <div class="slide-title-box">
+      <div class="slide-title">成 果 数 据 汇 总</div>
+      <div class="slide-subtitle">量化指标，客观呈现</div>
+    </div>
+    <div class="slide-en">Metrics</div>
+  </div>
+  <div class="content">
+    <div class="bg-stat-cards">
+      <div class="bg-stat"><div class="n">52<span>个</span></div><div class="d">代码文件总数<br>7000+ 行有效代码</div></div>
+      <div class="bg-stat"><div class="n">12<span>个</span></div><div class="d">GIS 可视化图层<br>（飞线/热力/3D挤出/散点/脉冲等）</div></div>
+      <div class="bg-stat"><div class="n">4<span>个</span></div><div class="d">业务模块闭环<br>10+ 业务面板完整联调</div></div>
+      <div class="bg-stat"><div class="n">99<span>%</span></div><div class="d">接口降级成功率<br>AI 双模式 100% 可用</div></div>
+    </div>
+
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th>指标</th>
+          <th>目标值</th>
+          <th>实际达成</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-pri">性能</span></td>
+          <td>首屏地图渲染</td>
+          <td>≤ 5s</td>
+          <td><b>2.8 s</b></td>
+          <td>含 Loading 动画 → 所有图层就绪</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-pri">性能</span></td>
+          <td>业务模块切换</td>
+          <td>≤ 1s</td>
+          <td><b>0.4 s</b></td>
+          <td>面板切换 + 地图视角飞行动画</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-sec">AI</span></td>
+          <td>首字节响应</td>
+          <td>≤ 3s</td>
+          <td><b>0.8 s</b></td>
+          <td>SSE 流式首字节（DeepSeek）</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-sec">AI</span></td>
+          <td>离线兜底可用性</td>
+          <td>100%</td>
+          <td><b>100 %</b></td>
+          <td>规则引擎 + 数据溯源双重降级</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-acc">部署</span></td>
+          <td>阿里云服务器访问</td>
+          <td>可访问</td>
+          <td><b>已上线</b></td>
+          <td>Nginx 静态托管 + PM2 守护 8080 端口</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-acc">工程</span></td>
+          <td>代码提交次数</td>
+          <td>≥ 20 次</td>
+          <td><b>30+ 次</b></td>
+          <td>Git 版本管理，Gitee + GitHub 双推</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="page-foot"><div class="logo-small">SMART CITY · WUHAN</div><div>成果数据汇总 　/　 10</div></div>
+</div>
+
+<!-- ========== P9 创新点 ========== -->
+<div class="slide" data-title="创新点">
+  <div class="slide-header">
+    <div class="slide-num">7</div>
+    <div class="slide-title-box">
+      <div class="slide-title">创 新 点</div>
+      <div class="slide-subtitle">技术与业务双重创新</div>
+    </div>
+    <div class="slide-en">Innovation</div>
+  </div>
+  <div class="content">
+    <div class="inn-grid">
+      <div class="inn-card">
+        <div class="inn-num">1</div>
+        <div class="inn-title">业务闭环可视化</div>
+        <div class="inn-body">
+          突破传统大屏"纯展示"局限，构建 <b>感知—诊断—调度—推演</b> 四阶段完整业务闭环：
+          <ul class="ul" style="margin-top: 8px;">
+            <li style="font-size:12px;">overview 模块进行全局态势感知</li>
+            <li style="font-size:12px;">risk 模块多维度诊断高风险区域</li>
+            <li style="font-size:12px;">resource 模块调度资源、评估可达覆盖</li>
+            <li style="font-size:12px;">simulation 模块推演策略效果并对比</li>
+          </ul>
+        </div>
+      </div>
+      <div class="inn-card">
+        <div class="inn-num">2</div>
+        <div class="inn-title">AI 大模型深度融合</div>
+        <div class="inn-body">
+          区别于普通大屏外挂式 AI，实现 <b>上下文感知 + 数据溯源 + 流式响应</b>：
+          <ul class="ul" style="margin-top: 8px;">
+            <li style="font-size:12px;">自动注入当前时段、模块、区域风险排行等上下文</li>
+            <li style="font-size:12px;">SSE 流式打字机动效，首字节响应 <b>0.8s</b></li>
+            <li style="font-size:12px;">回答数据可溯源到真实 mock 数据</li>
+            <li style="font-size:12px;">规则引擎兜底，离线也可使用</li>
+          </ul>
+        </div>
+      </div>
+      <div class="inn-card">
+        <div class="inn-num">3</div>
+        <div class="inn-title">数字孪生时段联动</div>
+        <div class="inn-body">
+          时间轴驱动三维多维度联动，呈现真实城市一天的变化：
+          <ul class="ul" style="margin-top: 8px;">
+            <li style="font-size:12px;"><b>天空</b>：清晨/白天/黄昏/深夜四套雾化参数</li>
+            <li style="font-size:12px;"><b>建筑</b>：不同时段楼体颜色/发光微调</li>
+            <li style="font-size:12px;"><b>道路</b>：夜间自动开启路灯效果</li>
+            <li style="font-size:12px;"><b>天气</b>：Header 实时显示当前武汉天气</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="cards" style="grid-template-columns: repeat(3, 1fr); margin-top: 10px;">
+      <div class="card" style="border-top-color: var(--c-accent);">
+        <div class="card-title"><span class="ico">4</span>飞线辐射 + 3D 挤出可视化</div>
+        <div class="card-body">参考成熟作品创新结合：中心→5 区域弧线飞行动画；风险值映射为区域多边形挤出高度，信息密度与美感兼顾</div>
+      </div>
+      <div class="card" style="border-top-color: var(--c-accent);">
+        <div class="card-title"><span class="ico">5</span>数据降级容错机制</div>
+        <div class="card-body">三级降级（API → Mock → 默认值）保证大屏永不空白，生产部署无 Mock 时 Express 提供真实数据接口</div>
+      </div>
+      <div class="card" style="border-top-color: var(--c-accent);">
+        <div class="card-title"><span class="ico">6</span>工程化 + 一键部署</div>
+        <div class="card-body">提供 deploy.sh 一键部署脚本 + Nginx 配置 + PM2 守护 + 8080 端口独立运行，无需影响既有网站</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-foot"><div class="logo-small">SMART CITY · WUHAN</div><div>创新点 　/　 11</div></div>
+</div>
+
+<!-- ========== P10 总结与展望 ========== -->
+<div class="slide" data-title="总结与展望">
+  <div class="slide-header">
+    <div class="slide-num">8</div>
+    <div class="slide-title-box">
+      <div class="slide-title">总 结 与 展 望</div>
+      <div class="slide-subtitle">完成内容总结 + 未来改进方向</div>
+    </div>
+    <div class="slide-en">Summary & Future</div>
+  </div>
+  <div class="content sum-wrap">
+    <div class="sum-col">
+      <h3><span class="ico-big">✓</span> 完成总结</h3>
+      <ul class="ul">
+        <li><b>架构升级完成</b>：Pinia 六维状态中枢，组件解耦、Devtools 友好</li>
+        <li><b>业务闭环打通</b>：4 大业务模块、10+ 面板、8 类图表联调通过</li>
+        <li><b>AI 真实接入</b>：DeepSeek 流式 SSE + 规则引擎降级 + 溯源</li>
+        <li><b>可视化增强</b>：飞线、3D 挤出、四时段天空、动态聚合</li>
+        <li><b>体验优化</b>：登录身份认证、Loading 动画、一键回首页</li>
+        <li><b>生产部署</b>：Nginx + PM2 一键部署，阿里云 8080 端口上线</li>
+        <li><b>文档齐全</b>：README 22 章 + Gitee/GitHub 双推版本管理</li>
+      </ul>
+    </div>
+    <div class="sum-col future">
+      <h3><span class="ico-big">→</span> 未来展望</h3>
+      <ul class="ul">
+        <li><b>真实数据接入</b>：对接武汉交管/气象/公交 OpenAPI，实现实时流式数据</li>
+        <li><b>多模型对比</b>：接入 GPT-4o / 通义千问 / GLM-4，横向对比 AI 决策质量</li>
+        <li><b>移动端适配</b>：响应式改造，支持指挥中心大屏 + 指挥员手机双端</li>
+        <li><b>事件推送</b>：增加 WebSocket 通道，新事件自动弹窗 + AI 一键处置建议</li>
+        <li><b>历史回放</b>：时段时间轴支持任意历史日期回放复盘</li>
+        <li><b>权限系统</b>：角色-菜单-按钮三级权限 + 操作审计日志</li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-foot"><div class="logo-small">SMART CITY · WUHAN</div><div>总结与展望 　/　 12</div></div>
+</div>
+
+<!-- ========== P11 致谢 ========== -->
+<div class="slide s-thanks" data-title="致谢">
+  <div class="thanks-inner">
+    <div class="thanks-zh">致 谢</div>
+    <div class="thanks-en">THANK YOU VERY MUCH</div>
+    <div class="thanks-msg">
+      感谢指导教师在项目选题、方案设计与论文撰写中给予的悉心指导；<br>
+      感谢实习单位工程师提供的工程实践机会与宝贵建议；<br>
+      感谢同学与答辩委员会的批评指正。
+    </div>
+    <div class="thanks-contact">
+      敬 请 各 位 老 师 批 评 指 正 · 欢 迎 提 问
+    </div>
+  </div>
+</div>
+
+</div><!-- deck -->
+
+<!-- 控制栏 -->
+<div class="ctl">
+  <button onclick="go(-1)">← 上一页</button>
+  <span class="pg" id="pgDisp">01 / 12</span>
+  <button onclick="go(1)">下一页 →</button>
+  <button onclick="print()">PDF 导出</button>
+  <button onclick="fullscreen()">全屏</button>
+</div>
+<div class="ctl" style="bottom: auto; top: 16px; left: auto; right: 16px; transform: none;">
+  <button><span class="k">←</span> <span class="k">→</span> 翻页</button>
+  <button><span class="k">F</span> 全屏</button>
+</div>
+
+<script>
+/* ================= PPT 翻页控制 ================= */
+const slides = document.querySelectorAll('.slide');
+let idx = 0;
+
+function render() {
+  slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+  const n = slides.length;
+  document.getElementById('pgDisp').textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(n).padStart(2, '0');
+  document.title = (idx + 1) + '/' + n + ' · ' + (slides[idx].dataset.title || '智慧城市答辩PPT');
+}
+
+function go(d) {
+  idx = Math.max(0, Math.min(slides.length - 1, idx + d));
+  render();
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') go(1);
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') go(-1);
+  else if (e.key === 'Home') { idx = 0; render(); }
+  else if (e.key === 'End') { idx = slides.length - 1; render(); }
+  else if (e.key.toLowerCase() === 'f') fullscreen();
+});
+
+function fullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen?.();
+  } else {
+    document.exitFullscreen?.();
+  }
+}
+
+function print() {
+  window.print();
+}
+
+render();
+</script>
+</body>
+</html>

@@ -3,6 +3,9 @@
 // 借鉴参考4(华农)的 DeepSeek + 流式 SSE + 自然语言查询架构
 import express from 'express'
 import cors from 'cors'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import { buildSystemPrompt, buildContextSummary } from './aiContext.js'
 import { generateRuleStream } from './ruleEngine.js'
 import { loadEnv } from './env.js'
@@ -15,6 +18,55 @@ app.use(cors())
 app.use(express.json({ limit: '2mb' }))
 
 const PORT = process.env.AI_PORT || 3001
+
+// ---------- Mock 数据接口(生产环境替代 vite-plugin-mock) ----------
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+// mock 数据目录: 优先项目根目录的 mock/, 兼容部署到 /opt/smart-city-ai/mock/
+const mockDir = fs.existsSync(path.join(__dirname, '../mock'))
+  ? path.join(__dirname, '../mock')
+  : path.join(__dirname, 'mock')
+
+const readJSON = (name) => JSON.parse(fs.readFileSync(path.join(mockDir, name), 'utf-8'))
+
+app.get('/api/wuhan_buildings', (req, res) => res.json(readJSON('Wuhan_Buildings.json')))
+app.get('/api/wuhan_roads', (req, res) => res.json(readJSON('Wuhan_roads.json')))
+app.get('/api/wuhan_events', (req, res) => res.json(readJSON('Wuhan_events.json')))
+app.get('/api/wuhan_regions', (req, res) => res.json(readJSON('Wuhan_regions.json')))
+app.get('/api/wuhan_resources', (req, res) => res.json(readJSON('Wuhan_resources.json')))
+
+app.get('/api/weather', (req, res) => {
+  const hour = parseInt(req.query.hour || '8', 10)
+  const period =
+    hour >= 6 && hour <= 10
+      ? 'morning'
+      : hour >= 11 && hour <= 15
+        ? 'afternoon'
+        : hour >= 16 && hour <= 18
+          ? 'dusk'
+          : 'night'
+  const weather = {
+    morning: { temp: 18, text: '晴', humidity: 65, wind: '东南风2级' },
+    afternoon: { temp: 27, text: '晴', humidity: 55, wind: '南风3级' },
+    dusk: { temp: 23, text: '多云', humidity: 70, wind: '东风2级' },
+    night: { temp: 16, text: '阴', humidity: 78, wind: '北风1级' },
+  }
+  res.json({ city: '武汉', ...weather[period], period, hour })
+})
+
+app.post('/api/ai_analysis', (req, res) => {
+  const { event_id, hour = 8 } = req.body || {}
+  const events = readJSON('Wuhan_events.json').features
+  const feature =
+    events.find((f) => String(f.properties.id) === String(event_id)) || events[0]
+  res.json({
+    area: feature.properties.area,
+    type: feature.properties.name,
+    level: feature.properties.level,
+    time: String(hour).padStart(2, '0') + ':00',
+    analysis: ['建议加强现场疏导', `预计${feature.properties.level * 10}分钟恢复通行`],
+  })
+})
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY
 const DEEPSEEK_URL = process.env.DEEPSEEK_URL || 'https://api.deepseek.com/chat/completions'
 const MODEL = process.env.DEEPSEEK_MODEL || 'deepseek-chat'

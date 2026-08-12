@@ -1,4 +1,4 @@
-﻿# 依赖目录
+# 依赖目录
 node_modules/
 .pnpm-store/
 
@@ -25,3 +25,6 @@ Thumbs.db
 
 # 其他
 *.local
+
+# 部署打包产物（勿提交，可用 deploy/ 脚本在服务器构建）
+deploy.zip

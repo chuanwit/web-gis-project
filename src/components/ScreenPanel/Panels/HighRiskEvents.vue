@@ -1,5 +1,5 @@
 <template>
-  <ChartCard title="高风险事件列表" is-static>
+  <ChartCard title="高风险事件列表">
     <ul class="event-list">
       <li v-for="e in topEvents" :key="e.id" class="event-item" @click="pick(e)">
         <span class="ev-type" :style="{ background: typeColor(e.name) }">{{ e.name }}</span>
@@ -74,6 +74,11 @@ function typeColor(t) {
   border-radius: 10px;
   color: #fff;
   font-size: 11px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ev-area {
   flex: 1;

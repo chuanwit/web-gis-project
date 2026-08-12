@@ -8,7 +8,9 @@ import ChartCard from '../Charts/ChartCard.vue'
 import G2Chart from '../Charts/G2Chart.vue'
 
 // 右上图表: 武汉市人口统计(饼图)
-const data = [
+// 图例简化: 仅保留武昌/洪山/江夏, 其余合并为"其他"
+const KEEPS = ['武昌区', '洪山区', '江夏区']
+const allData = [
   { type: '武昌区', value: 27 },
   { type: '洪山区', value: 25 },
   { type: '江夏区', value: 22 },
@@ -22,22 +24,24 @@ const data = [
   { type: '新洲区', value: 5 },
   { type: '其他', value: 18 },
 ]
+const othersValue = allData
+  .filter((d) => !KEEPS.includes(d.type))
+  .reduce((s, d) => s + d.value, 0)
+const data = [
+  ...allData.filter((d) => KEEPS.includes(d.type)),
+  { type: '其他', value: othersValue },
+]
 const total = data.reduce((s, d) => s + d.value, 0)
 
 const options = {
   type: 'interval',
+  // G2 v5 饼图(θ 坐标)必须 stackY, 否则各扇区不会按颜色堆叠(参考 EventTypeChart)
+  transform: [{ type: 'stackY' }],
   encode: { y: 'value', color: 'type' },
   coordinate: { type: 'theta', innerRadius: 0.55, outerRadius: 0.9 },
   scale: {
     color: {
-      type: 'ordinal',
-      // 明确指定定义域映射，确保 12 个区与 12 个颜色完全匹配
-      domain: data.map(d => d.type),
-      range: [
-        '#e6194b', '#3cb44b', '#ffe119', '#4363d8', 
-        '#f58231', '#911eb4', '#42d4f4', '#f032e6', 
-        '#bfef45', '#fabed4', '#469990', '#dcbeff'
-      ],
+      range: ['#00e5ff', '#2ecc40', '#ffb020', '#4a5568'],
     },
   },
   label: {

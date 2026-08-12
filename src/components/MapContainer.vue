@@ -34,14 +34,22 @@ onMounted(() => {
     container: mapEl.value, // 指定地图容器元素
     style: 'mapbox://styles/mapbox/dark-v11',
     center: [114.3, 30.5],
-    zoom: 1,
+    zoom: 14, // 初始即城市视角(非地球俯瞰), 避免 Loading 后再飞行
     projection: 'globe',
     accessToken: import.meta.env.VITE_TOKEN,
-    pitch: 0,
+    pitch: 70,
   })
   map.on('style.load', () => {
-    // 设置地球的大气层
-    map.setFog({})
+    // 设置地球的初始大气层(morning 默认, 后续由 SmartCity applySky 按时段覆盖)
+    // 注意: 不能用 setFog({}) 空对象, 否则会覆盖 applySky 设置的时段雾化
+    map.setFog({
+      color: '#f5d6b8',
+      'high-color': '#8ec5e8',
+      'horizon-blend': 0.45,
+      'space-color': '#6ba3d0',
+      range: [2, 12],
+      'star-intensity': 0.5,
+    })
   })
 
   // 2. 创建L7的场景
