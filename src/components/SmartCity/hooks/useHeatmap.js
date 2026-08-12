@@ -56,3 +56,5 @@ export default async () => {
 
   return heatmap_layer
 }
+
+

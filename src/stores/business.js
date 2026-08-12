@@ -133,3 +133,5 @@ export const useBusinessStore = defineStore('business', () => {
     resetSimulation,
   }
 })
+
+

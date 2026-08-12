@@ -6,3 +6,5 @@ export const getRegions = () =>
 
 export const getResources = () =>
   request({ url: '/api/wuhan_resources', method: 'GET' })
+
+

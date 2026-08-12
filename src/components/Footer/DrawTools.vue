@@ -150,3 +150,5 @@ function toggleDraw() {
 // 组件卸载时清理绘制实例, 避免图层残留
 onBeforeUnmount(clearDraw)
 </script>
+
+

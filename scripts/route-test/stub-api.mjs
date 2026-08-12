@@ -8,3 +8,5 @@ const read = (name) => JSON.parse(readFileSync(join(root, 'mock', name), 'utf-8'
 
 export const getRoads = () => Promise.resolve(read('Wuhan_roads.json'))
 export const getEvents = () => Promise.resolve(read('Wuhan_events.json'))
+
+

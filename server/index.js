@@ -221,3 +221,5 @@ app.listen(PORT, () => {
     `[AI 服务] 模式: ${DEEPSEEK_API_KEY ? 'DeepSeek 真实大模型' : '规则引擎降级(可填 .env 中 DEEPSEEK_API_KEY 启用真实模型)'}`,
   )
 })
+
+

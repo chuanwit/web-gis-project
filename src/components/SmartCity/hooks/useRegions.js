@@ -79,3 +79,5 @@ export async function getRegionsData() {
   if (!regionsData) regionsData = await getRegions()
   return regionsData
 }
+
+

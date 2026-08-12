@@ -164,3 +164,5 @@ regions.features.forEach((f) => {
     `  ${f.properties.area}(${f.properties.name}): events=${f.properties.eventCount} risk=${f.properties.riskScore} center=[${f.properties.center[0]},${f.properties.center[1]}]`,
   )
 })
+
+

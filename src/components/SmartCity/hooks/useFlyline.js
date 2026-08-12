@@ -114,3 +114,5 @@ export function setFlylineVisible(scene, visible) {
   if (endpointLayer) visible ? endpointLayer.show() : endpointLayer.hide()
   if (centerLayer) visible ? centerLayer.show() : centerLayer.hide()
 }
+
+

@@ -148,3 +148,5 @@ export async function getResourcesData() {
 export function bindScene(scene) {
   window.__scene__ = scene
 }
+
+

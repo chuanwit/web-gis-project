@@ -76,3 +76,5 @@ if (detourDemo) {
 
 console.log(`\n结果: ${pass}/${cases.length} 条路径成功`)
 process.exit(pass === cases.length ? 0 : 1)
+
+

@@ -37,3 +37,5 @@ import ChartCard from '../Charts/ChartCard.vue'
   color: #1990ff;
 }
 </style>
+
+

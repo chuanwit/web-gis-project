@@ -13,3 +13,5 @@ export const useMapStore = defineStore('map', () => {
   const getSceneMap = () => sceneRef.value
   return { sceneRef, setSceneMap, getSceneMap }
 })
+
+

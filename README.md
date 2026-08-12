@@ -961,3 +961,5 @@ npm run preview  # 本地预览
 ```
 
 构建产物可部署到任意 Web 服务器（Nginx / Vercel / Netlify 等）。AI 服务需单独部署 Node.js 环境。
+
+
