@@ -17,6 +17,9 @@ import { Scene } from '@antv/l7'
 import { Mapbox } from '@antv/l7-maps'
 
 import { SCENE_MAP_KEY } from '@/composables/useSceneMap.js'
+import { useMapStore } from '@/stores'
+
+const mapStore = useMapStore()
 
 // 获取地图容器对应的dom元素
 const mapEl = ref(null)
@@ -51,6 +54,8 @@ onMounted(() => {
   })
   // 设置sceneMap.value的值, 为后续组件提供地图场景和地图实例对象
   sceneMap.value = { scene, map }
+  // 同步镜像到 Pinia map store(供非后代组件如 AI 助手访问)
+  mapStore.setSceneMap({ scene, map })
 
   // 修正 CSS 缩放下 L7 的点击坐标偏差(见 patchL7ContainerScale 注释)
   // 注意: 必须用 scene.getMapService()(L7 地图服务), 不能用 scene.map(mapbox 实例)

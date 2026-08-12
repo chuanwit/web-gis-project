@@ -1,0 +1,290 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0001",
+        "type": "hospital",
+        "typeName": "医院",
+        "name": "区域1-人民医院",
+        "area": "区域1",
+        "capacity": 27,
+        "serviceRadius": 1500
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.322156,
+          30.544786
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0002",
+        "type": "fire",
+        "typeName": "消防站",
+        "name": "区域1-消防中队",
+        "area": "区域1",
+        "capacity": 34,
+        "serviceRadius": 1200
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.305496,
+          30.546746
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0003",
+        "type": "police",
+        "typeName": "交警队",
+        "name": "区域1-交警大队",
+        "area": "区域1",
+        "capacity": 41,
+        "serviceRadius": 1200
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.316718,
+          30.536842
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0004",
+        "type": "hospital",
+        "typeName": "医院",
+        "name": "区域2-中医院",
+        "area": "区域2",
+        "capacity": 48,
+        "serviceRadius": 1500
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.330069,
+          30.560529
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0005",
+        "type": "fire",
+        "typeName": "消防站",
+        "name": "区域2-消防中队",
+        "area": "区域2",
+        "capacity": 55,
+        "serviceRadius": 1200
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.318178,
+          30.548698
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0006",
+        "type": "police",
+        "typeName": "交警队",
+        "name": "区域2-交警大队",
+        "area": "区域2",
+        "capacity": 62,
+        "serviceRadius": 1200
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.332912,
+          30.551332
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0007",
+        "type": "hospital",
+        "typeName": "医院",
+        "name": "区域3-协和医院",
+        "area": "区域3",
+        "capacity": 69,
+        "serviceRadius": 1500
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.299673,
+          30.552528
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0008",
+        "type": "fire",
+        "typeName": "消防站",
+        "name": "区域3-消防中队",
+        "area": "区域3",
+        "capacity": 76,
+        "serviceRadius": 1200
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.284338,
+          30.559323
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0009",
+        "type": "police",
+        "typeName": "交警队",
+        "name": "区域3-交警大队",
+        "area": "区域3",
+        "capacity": 83,
+        "serviceRadius": 1200
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.292131,
+          30.546545
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0010",
+        "type": "hospital",
+        "typeName": "医院",
+        "name": "区域4-中心医院",
+        "area": "区域4",
+        "capacity": 90,
+        "serviceRadius": 1500
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.330056,
+          30.552018
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0011",
+        "type": "fire",
+        "typeName": "消防站",
+        "name": "区域4-消防中队",
+        "area": "区域4",
+        "capacity": 97,
+        "serviceRadius": 1200
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.3152,
+          30.544229
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0012",
+        "type": "police",
+        "typeName": "交警队",
+        "name": "区域4-交警大队",
+        "area": "区域4",
+        "capacity": 24,
+        "serviceRadius": 1200
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.330054,
+          30.542391
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0013",
+        "type": "hospital",
+        "typeName": "医院",
+        "name": "区域5-同济医院",
+        "area": "区域5",
+        "capacity": 31,
+        "serviceRadius": 1500
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.321887,
+          30.559614
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0014",
+        "type": "fire",
+        "typeName": "消防站",
+        "name": "区域5-消防中队",
+        "area": "区域5",
+        "capacity": 38,
+        "serviceRadius": 1200
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.318705,
+          30.560484
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "R0015",
+        "type": "police",
+        "typeName": "交警队",
+        "name": "区域5-交警大队",
+        "area": "区域5",
+        "capacity": 45,
+        "serviceRadius": 1200
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.322375,
+          30.545973
+        ]
+      }
+    }
+  ]
+}

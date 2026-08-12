@@ -13,6 +13,10 @@ import useRoads, { rebuildRoads } from './hooks/useRoads'
 import useHeatmap from './hooks/useHeatmap'
 import useScatterAnimate from './hooks/useScatterAnimate'
 import { showFactoryModels, hideFactoryModels, flyToPark } from './hooks/useModels3d'
+import useRegions, { setRegionsVisible, highlightRegion } from './hooks/useRegions'
+import useResources, { setResourcesVisible, bindScene } from './hooks/useResources'
+import useFlyline, { setFlylineVisible } from './hooks/useFlyline'
+import { useBusinessStore, MODULE_VIEWS } from '@/stores'
 
 // 通过inject, 获取地图场景对象(shallowRef)
 const sceneMap = useSceneMap()
@@ -20,6 +24,8 @@ const sceneMap = useSceneMap()
 const toggles = useLayerToggles()
 // 统一时间轴状态(hour/period)
 const { state: timeState, period } = useTimeOfDay()
+// 业务模块状态(顶部业务导航)
+const business = useBusinessStore()
 
 // 扩展图层实例(场景就绪后创建一次)
 let heatmapLayer = null
@@ -54,12 +60,87 @@ watch(sceneMap, async (val) => {
   scene.addLayer(heatmapLayer)
   scene.addLayer(scatterLayer)
 
+  // 业务模块图层: 区域多边形 + 应急资源(始终挂载, 按业务模块显隐)
+  bindScene(scene) // 为资源 popup 注入 scene
+  try {
+    const regionLayers = await useRegions()
+    regionLayers.forEach((l) => scene.addLayer(l))
+    setRegionsVisible(scene, false) // 默认隐藏(综合态势不显示)
+  } catch (e) {
+    console.error('[SmartCity] 区域图层初始化失败:', e)
+  }
+  try {
+    const resLayers = await useResources()
+    resLayers.forEach((l) => scene.addLayer(l))
+    setResourcesVisible(scene, false) // 默认隐藏
+  } catch (e) {
+    console.error('[SmartCity] 资源图层初始化失败:', e)
+  }
+  // 飞线辐射图层(中心→5 区域弧线飞行动画, 综合态势模块展示)
+  try {
+    const flylineLayers = await useFlyline()
+    flylineLayers.forEach((l) => scene.addLayer(l))
+    setFlylineVisible(scene, business.module === 'overview') // 默认按当前模块显隐
+  } catch (e) {
+    console.error('[SmartCity] 飞线图层初始化失败:', e)
+  }
+
   // 依据当前开关状态初始化(散点动图默认开启, 热力图/三维默认关闭)
   applyToggles(scene, map)
+  // 依据当前业务模块初始化图层显隐
+  applyBusinessModule(scene, map, business.module)
   // 依据当前时间轴时段初始化(天空/建筑灯光/道路拥堵)
   sceneReady = true
   await applyDigitalTwin(scene, map)
 })
+
+// 业务模块切换: 联动地图视角 + 区域/资源图层显隐
+watch(
+  () => business.module,
+  (m) => {
+    if (!sceneMap.value) return
+    const { scene, map } = sceneMap.value
+    applyBusinessModule(scene, map, m)
+  },
+)
+
+// 选中区域变化: 高亮该区域 + 飞行定位
+watch(
+  () => business.selectedArea,
+  (area) => {
+    if (!sceneMap.value) return
+    const { scene, map } = sceneMap.value
+    highlightRegion(scene, area)
+    if (area) {
+      // 从区域数据找中心点飞行
+      import('@/api/regions').then(({ getRegions }) =>
+        getRegions().then((data) => {
+          const f = data.features.find((x) => x.properties.area === area)
+          if (f && map) {
+            const [lng, lat] = f.properties.center
+            map.flyTo({ center: [lng, lat], zoom: 14.5, pitch: 60, duration: 1200 })
+          }
+        }),
+      )
+    }
+  },
+)
+
+// 按业务模块切换图层显隐 + 飞行视角
+function applyBusinessModule(scene, map, m) {
+  // 区域图层: risk/resource/simulation 显示, overview 隐藏
+  const showRegions = m === 'risk' || m === 'resource' || m === 'simulation'
+  setRegionsVisible(scene, showRegions)
+  // 资源图层: 仅 resource 显示
+  setResourcesVisible(scene, m === 'resource')
+  // 飞线辐射: 仅综合态势(overview)显示, 其他模块隐藏避免视觉干扰
+  setFlylineVisible(scene, m === 'overview')
+  // 飞行到模块对应视角
+  const view = MODULE_VIEWS[m]
+  if (view && map) {
+    map.flyTo({ ...view })
+  }
+}
 
 // 统一时间轴变化: 交通流预测(道路拥堵变色) + 数字孪生(天空/建筑灯光/道路发光) 联动
 watch(

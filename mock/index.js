@@ -30,6 +30,41 @@ module.exports = [
     response: () => readJSON('Wuhan_events.json'),
   },
   {
+    // 武汉区域多边形(5 个重点片区, 由事件数据派生)
+    url: '/api/wuhan_regions',
+    method: 'get',
+    response: () => readJSON('Wuhan_regions.json'),
+  },
+  {
+    // 应急资源点(医院/消防/交警, 每区域 3 个)
+    url: '/api/wuhan_resources',
+    method: 'get',
+    response: () => readJSON('Wuhan_resources.json'),
+  },
+  {
+    // 实时天气(模拟, 按时段返回武汉天气)
+    url: '/api/weather',
+    method: 'get',
+    response: ({ query }) => {
+      const hour = parseInt(query?.hour || '8', 10)
+      const period =
+        hour >= 6 && hour <= 10
+          ? 'morning'
+          : hour >= 11 && hour <= 15
+            ? 'afternoon'
+            : hour >= 16 && hour <= 18
+              ? 'dusk'
+              : 'night'
+      const weather = {
+        morning: { temp: 18, text: '晴', humidity: 65, wind: '东南风2级' },
+        afternoon: { temp: 27, text: '晴', humidity: 55, wind: '南风3级' },
+        dusk: { temp: 23, text: '多云', humidity: 70, wind: '东风2级' },
+        night: { temp: 16, text: '阴', humidity: 78, wind: '北风1级' },
+      }
+      return { city: '武汉', ...weather[period], period, hour }
+    },
+  },
+  {
     // AI 智能分析: 基于事故特征(类型/等级/区域/时段)规则生成分析建议
     // 地点定位: 找距事故点最近的道路名(按 event_id 懒缓存); 建议由类型+时段+等级规则拼接
     url: '/api/ai_analysis',

@@ -1,12 +1,12 @@
 import { createApp } from 'vue'
+import { pinia } from './stores'
 import App from './App.vue'
 import './assets/styles/reset.css'
+import './assets/styles/theme.css'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-// 测试接口
-import { getCityBuildings } from './api/index.js'
-getCityBuildings().then((res) => {
-  console.log(res)
-})
 
-createApp(App).use(ElementPlus).mount('#app')
+const app = createApp(App)
+app.use(pinia)
+app.use(ElementPlus)
+app.mount('#app')

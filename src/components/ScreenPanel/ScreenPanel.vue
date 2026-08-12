@@ -1,20 +1,63 @@
 <template>
   <!-- 大屏面板: Grid 网格定位各区域, 非面板区域点击穿透到地图 -->
+  <!-- 业务模块切换: BusinessNav 驱动 business.store, 左右面板按模块切换内容 -->
   <div class="panel">
     <header class="area-header">
       <Header></Header>
     </header>
-    <!-- 左侧图表列(客流趋势 + 公交客流雷达/玫瑰图) -->
+
+    <!-- 顶部业务导航(悬浮在 header 下方中央) -->
+    <BusinessNav class="business-nav-wrap" />
+    <!-- KPI 指标卡片(悬浮在导航下方) -->
+    <KpiBar />
+
+    <!-- 左侧图表列: 按业务模块切换内容 -->
     <aside class="area-left" v-show="show">
-      <TravelChart />
-      <BusChart />
+      <!-- 综合态势: 出行人口 + 公交客流 -->
+      <template v-if="business.module === 'overview'">
+        <TravelChart />
+        <BusChart />
+      </template>
+      <!-- 交通风险诊断: 风险雷达 + 事件类型分布 -->
+      <template v-else-if="business.module === 'risk'">
+        <RiskRadarChart />
+        <EventTypeChart />
+      </template>
+      <!-- 应急资源可达: 资源筛选 + 覆盖率 -->
+      <template v-else-if="business.module === 'resource'">
+        <ResourceFilter />
+        <ResourceCoverage />
+      </template>
+      <!-- 情景推演优化: 策略勾选 -->
+      <template v-else-if="business.module === 'simulation'">
+        <SimulationStrategies />
+      </template>
     </aside>
-    <!-- 右侧图表列(含静态统计卡片) -->
+
+    <!-- 右侧图表列: 按业务模块切换内容 -->
     <aside class="area-right" v-show="show">
-      <PopulationChart />
-      <HospitalCard />
-      <UniversityCard />
+      <!-- 综合态势: 人口 + 医院 + 高校 -->
+      <template v-if="business.module === 'overview'">
+        <PopulationChart />
+        <HospitalCard />
+        <UniversityCard />
+      </template>
+      <!-- 交通风险诊断: 区域风险排行 + 高风险事件列表 -->
+      <template v-else-if="business.module === 'risk'">
+        <RegionRiskRank />
+        <HighRiskEvents />
+      </template>
+      <!-- 应急资源可达: 医院 + 高校(保留统计) -->
+      <template v-else-if="business.module === 'resource'">
+        <HospitalCard />
+        <UniversityCard />
+      </template>
+      <!-- 情景推演优化: 预估指标 + 运行模拟 -->
+      <template v-else-if="business.module === 'simulation'">
+        <SimulationPreview />
+      </template>
     </aside>
+
     <footer class="area-footer">
       <Footer v-model="show" />
     </footer>
@@ -23,14 +66,33 @@
 <script setup>
 import { ref } from 'vue'
 import Header from './Header.vue'
+import BusinessNav from './BusinessNav.vue'
+import KpiBar from './KpiBar.vue'
+// 综合态势面板
 import TravelChart from './Panels/TravelChart.vue'
 import BusChart from './Panels/BusChart.vue'
 import PopulationChart from './Panels/PopulationChart.vue'
 import HospitalCard from './Panels/HospitalCard.vue'
 import UniversityCard from './Panels/UniversityCard.vue'
+// 交通风险诊断面板
+import RiskRadarChart from './Panels/RiskRadarChart.vue'
+import EventTypeChart from './Panels/EventTypeChart.vue'
+import RegionRiskRank from './Panels/RegionRiskRank.vue'
+import HighRiskEvents from './Panels/HighRiskEvents.vue'
+// 应急资源可达面板
+import ResourceFilter from './Panels/ResourceFilter.vue'
+import ResourceCoverage from './Panels/ResourceCoverage.vue'
+// 情景推演优化面板
+import SimulationStrategies from './Panels/SimulationStrategies.vue'
+import SimulationPreview from './Panels/SimulationPreview.vue'
+
 import Footer from 'D:/1创建项目地/专业实习/smart-city/src/components/Footer/index.vue'
+import { useBusinessStore } from '@/stores'
+
 // 控制面板显示隐藏
 const show = ref(true)
+// 业务模块状态(驱动左右面板切换)
+const business = useBusinessStore()
 </script>
 <style scoped>
 /* Grid 叠加层: 面板悬浮在地图之上(absolute 全屏), 统一管理大屏各区域位置 */
@@ -38,7 +100,6 @@ const show = ref(true)
   position: absolute;
   inset: 0;
   /* 悬浮在地图上层的 z-index, 低于地图控件(MapControls 通常更高) */
-  /* 注意必须高于 L7 Scene(z-index: 2): 否则城市视角下建筑/道路图层绘制在面板之上, 看起来就像卡片"半透明"透出了建筑 */
   z-index: 3;
   display: grid;
   /*
@@ -58,9 +119,19 @@ const show = ref(true)
   pointer-events: none;
 }
 
-/* 头部: 占 header 区域, 恢复点击(标题无需交互, 主要是明确归属) */
+/* 头部: 占 header 区域, 恢复点击 */
 .area-header {
   grid-area: header;
+  pointer-events: auto;
+}
+
+/* 业务导航容器: 悬浮在 header 下方, 恢复点击 */
+.business-nav-wrap {
+  position: absolute;
+  left: 50%;
+  top: 100px;
+  transform: translateX(-50%);
+  z-index: 5;
   pointer-events: auto;
 }
 
@@ -78,6 +149,7 @@ const show = ref(true)
   /* 卡片之间的纵向间距 */
   gap: 16px;
   padding: 20px;
+  padding-top: 60px; /* 为顶部 BusinessNav + KpiBar 留空间 */
   box-sizing: border-box;
 }
 /* 左右两列分别定位到对应网格区域 */

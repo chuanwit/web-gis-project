@@ -1,285 +1,88 @@
 # 智慧城市可视化大屏 - 武汉
 
-基于 Vue 3 + Mapbox GL + AntV L7 的智慧城市三维可视化大屏项目，以武汉市为示例，实现建筑、道路、交通事件等多源数据的融合展示与交互分析。
+> 基于 Vue 3 + Mapbox GL + AntV L7 的智慧城市三维可视化大屏，以武汉市为示例，实现建筑、道路、事件、区域、资源等多源数据的融合展示、业务闭环分析与 AI 智能辅助决策。
 
 ---
 
-## 📗 本地运行教程（从零开始）
->
-> **本教程将安装的软件**：Node.js、npm、Git（可选）、VS Code
->
-> **本教程将安装的项目依赖包**：Vue、Vite、Mapbox GL、AntV L7、Element Plus、Axios、Turf.js、threebox-plugin 等 500+ 个包（通过 `npm install` 一次性自动安装）
+## 目录
+
+- [项目概述](#项目概述)
+- [核心特性](#核心特性)
+- [技术栈](#技术栈)
+- [环境要求](#环境要求)
+- [快速开始](#快速开始)
+- [项目结构](#项目结构)
+- [架构设计](#架构设计)
+- [业务模块详解](#业务模块详解)
+- [AI 智能助手](#ai-智能助手)
+- [地图图层与可视化](#地图图层与可视化)
+- [交互工具](#交互工具)
+- [数字孪生时段联动](#数字孪生时段联动)
+- [数据面板与图表](#数据面板与图表)
+- [登录与体验优化](#登录与体验优化)
+- [状态管理（Pinia）](#状态管理pinia)
+- [Mock 数据与 API](#mock-数据与-api)
+- [Express AI 服务](#express-ai-服务)
+- [配置说明](#配置说明)
+- [开发注意事项](#开发注意事项)
+- [常见问题](#常见问题)
+- [浏览器支持](#浏览器支持)
 
 ---
 
-### 第一步：安装 Node.js（必需）
+## 项目概述
 
-Node.js 是运行 JavaScript 的环境，也是本项目依赖的核心。安装 Node.js 会**自动安装 npm**（包管理工具）。
+本项目是一个面向城市交通指挥中心的智慧城市可视化大屏，以武汉市为示例区域，融合了三维地图渲染、多源数据可视化、业务闭环分析、AI 大模型辅助决策等多项能力。
 
-1. 打开 Node.js 官网：<https://nodejs.org/>
-2. 下载 **LTS（长期支持版）**，例如 `v20.x.x`（点击页面上的绿色 "LTS" 按钮下载）
-   - Windows 用户下载 `.msi` 安装包
-   - Mac 用户下载 `.pkg` 安装包
-3. 双击安装包，**一路点「Next」**即可，无需修改任何选项
-4. 安装完成后，验证是否成功：
-   - **Windows**：按 `Win + R`，输入 `cmd` 回车打开命令提示符
-   - **Mac**：打开「终端」应用（在启动台中搜索"终端"）
-   - 输入以下命令并回车：
+### 整体能力一览
 
-   ```bash
-   node -v
-   npm -v
-   ```
-
-   如果显示版本号（如 `v20.18.0` 和 `10.8.2`），说明安装成功 ✅
-
-> **什么是 npm？** npm 是 Node.js 自带的包管理工具，用来安装项目需要的各种第三方库（类似手机的应用商店）。后面用到的 Vue、Mapbox 等所有库都通过 npm 安装。
-
-> **关于 Node 版本**：本项目要求 Node.js >= 16，建议安装最新的 LTS 版（v20 或 v22）。如果版本过低（如 v14），部分依赖会安装失败。
+| 能力域 | 说明 |
+|--------|------|
+| 三维地图 | Mapbox GL 地球投影 + AntV L7 地理可视化，建筑/道路/事件/区域/资源多图层融合 |
+| 业务闭环 | 综合态势 → 交通风险诊断 → 应急资源可达 → 情景推演优化，四大模块联动切换 |
+| AI 大模型 | DeepSeek 真实大模型接入 + SSE 流式响应 + 规则引擎降级兜底 + 数据溯源 |
+| 数字孪生 | 上午/下午/傍晚/夜晚四时段天空、建筑灯光、道路拥堵联动 |
+| 交互分析 | 矩形拉框事故查询、多边形面积测量、线段长度测量、A* 最优路径规划 |
+| 体验优化 | 星空登录界面、Loading 启动动画、KPI 指标卡片、实时天气、飞线辐射动画 |
 
 ---
 
-### 第二步：安装 Git（可选，推荐）
+## 核心特性
 
-Git 是版本控制工具，用于从代码仓库克隆项目。如果你已经拿到项目压缩包，可以跳过此步。
+### 1. 业务闭环（四大模块）
 
-#### Windows 安装 Git
+顶部业务导航驱动整个大屏的模块切换，每个模块联动地图视角、图层显隐、左右面板内容、KPI 指标：
 
-1. 打开 Git 官网：<https://git-scm.com/downloads>
-2. 点击 "Windows" 下载安装包
-3. 双击安装，**一路 Next 即可**（所有选项保持默认）
-4. 安装完成后，在终端验证：
+| 模块 | 地图视角 | 图层 | 左侧面板 | 右侧面板 |
+|------|----------|------|----------|----------|
+| 综合态势 | 城市俯瞰 pitch=70 | 飞线辐射 + 建筑道路 | 出行人口 + 公交客流 | 人口统计 + 医院 + 高校 |
+| 交通风险诊断 | 风险区域 pitch=60 | 区域 3D 挤出 + 风险着色 | 风险雷达 + 事件类型分布 | 区域风险排行 + 高风险事件列表 |
+| 应急资源可达 | 资源俯瞰 pitch=55 | 区域 + 资源点 + 服务半径 | 资源分类筛选 + 覆盖效能 | 医院 + 高校统计 |
+| 情景推演优化 | 目标区域 pitch=60 | 区域 3D 挤出 | 策略勾选 + 目标片区 | 预估指标对比 + 运行模拟 |
 
-   ```bash
-   git --version
-   ```
+### 2. AI 智能助手（DeepSeek + SSE 流式）
 
-   显示 `git version 2.x.x` 即安装成功 ✅
+- 接入 DeepSeek 真实大模型（可配置 API Key）
+- SSE 流式响应，打字机效果逐字输出
+- 数据上下文注入：将当前城市数据（区域风险排行、事件分布、资源统计）作为 system prompt
+- 数据溯源标签：每条回答标注引用了哪些数据源
+- 规则引擎降级：未配置 API Key 或调用失败时，自动切换规则引擎保证演示不中断
+- 快捷问题芯片：预置 6 个常见问题，一键发送
 
-#### Mac 安装 Git
+### 3. 可视化增强
 
-- 方式一：安装 Xcode Command Line Tools（推荐）
+- **飞线辐射动画**：武汉中心 → 5 区域弧线飞行动画，按风险值着色（低→高：青→黄→红）
+- **3D 区域挤出**：PolygonLayer extrude，按 riskScore 挤出高度，直观呈现风险等级
+- **资源服务半径**：turf.buffer 生成缓冲区多边形，半透明覆盖展示资源覆盖范围
+- **实时天气**：Header 显示武汉天气，随时段（上午/下午/傍晚/夜晚）变化
+- **拉框动态聚合**：框选事件实时统计总数、平均等级、最高等级、主要类型 + 类型分布迷你条
 
-  ```bash
-  xcode-select --install
-  ```
+### 4. 体验优化
 
-  弹窗中点"安装"，等待完成即可。
-
-- 方式二：用 Homebrew 安装
-
-  ```bash
-  brew install git
-  ```
-
----
-
-### 第三步：安装 VS Code 编辑器（推荐）
-
-VS Code 是微软出品的免费代码编辑器，前端开发几乎都用它。
-
-1. 打开 <https://code.visualstudio.com/>
-2. 下载对应系统的安装包，双击安装（一路 Next）
-3. （可选但推荐）安装以下插件提升开发体验：
-   - 打开 VS Code
-   - 点击左侧栏的 **扩展** 图标（或按 `Ctrl+Shift+X`）
-   - 依次搜索并安装：
-     - **Vue - Official**（Vue 语法高亮和补全）
-     - **ESLint**（代码规范检查，可选）
-
----
-
-### 第四步：获取项目代码
-
-#### 方式 A：用 Git 克隆（推荐，便于后续更新）
-
-```bash
-# 在任意文件夹右键 → 打开终端（或 Git Bash）
-git clone <项目仓库地址>
-cd smart-city
-```
-
-#### 方式 B：直接下载 ZIP 压缩包
-
-1. 下载项目的 ZIP 压缩包
-2. 解压到任意目录，例如 `D:\projects\smart-city`
-3. 在该目录下打开终端：
-   - **Windows**：进入项目文件夹，在地址栏输入 `cmd` 回车
-   - **Mac**：在终端中输入 `cd `（注意有空格），然后把文件夹拖进终端，回车
-
-> **如何确认当前在项目目录？** 终端中输入 `dir`（Windows）或 `ls`（Mac），能看到 `package.json`、`vite.config.js`、`src` 等文件/文件夹，说明位置正确。
-
----
-
-### 第五步：配置国内 npm 镜像（强烈推荐）
-
-由于默认 npm 源在海外，国内访问较慢。**强烈建议**先切换为国内镜像：
-
-```bash
-npm config set registry https://registry.npmmirror.com
-```
-
-验证是否设置成功：
-
-```bash
-npm config get registry
-```
-
-输出 `https://registry.npmmirror.com/` 即可 ✅
-
-> **说明**：此设置为全局配置，只需执行一次。后续所有 `npm install` 都会自动走国内镜像，速度大幅提升。
-
----
-
-### 第六步：安装项目依赖（关键步骤）
-
-在项目根目录的终端中执行：
-
-```bash
-npm install
-```
-
-> **这一步在做什么？** 读取项目的 `package.json` 文件，自动下载所有依赖包到 `node_modules/` 文件夹。
-
-> **预计耗时**：3~10 分钟（取决于网络速度），期间会显示大量滚动文字，这是正常的，请耐心等待。
-
-> **本项目主要依赖的包**（npm install 会自动安装，无需手动）：
->
-> | 包名 | 作用 |
-> |------|------|
-> | `vue` | 前端框架，构建用户界面 |
-> | `vite` | 开发服务器和构建工具 |
-> | `@vitejs/plugin-vue` | Vite 的 Vue 插件 |
-> | `mapbox-gl` | 三维地图渲染引擎 |
-> | `@antv/l7` | 地理可视化图层（建筑/道路/热力图等） |
-> | `@antv/l7-maps` | L7 的地图适配器 |
-> | `@antv/l7-draw` | L7 的绘制工具（矩形/多边形/线段） |
-> | `@antv/g2` | 统计图表库（柱状图/饼图/玫瑰图） |
-> | `@turf/turf` | 地理空间计算（点面关系、距离等） |
-> | `threebox-plugin` | 在 Mapbox 中加载 3D 模型 |
-> | `element-plus` | UI 组件库（表格、按钮等） |
-> | `axios` | HTTP 请求库 |
-> | `vite-plugin-mock` | 本地 Mock 数据服务 |
-
-> **如果报错怎么办？** 常见原因和解决方案：
-> - `npm ERR! network`：网络问题，确认已执行第五步切换国内镜像
-> - `npm ERR! ERESOLVE`：依赖版本冲突，尝试 `npm install --legacy-peer-deps`
-> - 权限错误（Mac/Linux）：在命令前加 `sudo`，即 `sudo npm install`
-> - Node 版本太低：确认 `node -v` 输出 >= 16，如过低请回到第一步重新安装
-> - `EPERM` 或 `EACCES`：文件权限问题，关闭编辑器和占用 `node_modules` 的程序后重试
-
-**安装成功的标志**：终端最后一行显示类似 `added 500 packages in 30s`，且项目目录下出现了 `node_modules` 文件夹。
-
----
-
-### 第七步：配置 Mapbox Token（已内置，通常可跳过）
-
-项目根目录的 `.env` 文件中配置
-
-```env
-VITE_TOKEN= .....
-```
-
-**何时需要替换自己的 Token？**
-- 网络环境无法访问 Mapbox 服务
-- 内置 Token 被限流
-- 需要部署到生产环境
-
-**如何获取自己的 Token？**
-1. 访问 <https://account.mapbox.com/access-tokens/> 注册/登录
-2. 创建一个新的 Token
-3. 复制 Token 字符串
-4. 用编辑器打开项目根目录的 `.env` 文件
-5. 替换 `VITE_TOKEN=` 后面的值，保存
-
-> **注意**：修改 `.env` 后需要**重启开发服务器**（在终端按 `Ctrl+C` 停止，再执行 `npm run dev`）。
-
----
-
-### 第八步：启动开发服务器 🚀
-
-在终端中执行：
-
-```bash
-npm run dev
-```
-
-终端会显示类似如下输出：
-
-```
-  VITE v8.x.x  ready in 500 ms
-
-  ➜  Local:   http://localhost:5173/
-  ➜  Network: http://192.168.x.x:5173/
-```
-
-**用浏览器打开 `http://localhost:5173/` 即可看到大屏页面！** 🎉
-
-> **注意**：开发服务器运行期间终端窗口要保持打开。按 `Ctrl + C` 可以停止服务器。
->
-> **端口被占用？** 如果 5173 端口被占用，Vite 会自动换用 5174、5175 等端口，以终端输出的为准。
->
-> **首次加载较慢**：第一次打开页面时，Mapbox 地图瓦片和数据需要从服务器下载，可能需要等待 10~30 秒。后续访问会快很多（浏览器缓存）。
->
-> **控制台报红色错误？** 按 `F12` 打开浏览器控制台查看。如果是网络请求失败（如 401/403），通常是 Mapbox Token 或网络问题；如果是脚本错误，请检查依赖是否安装完整。
-
----
-
-### 第九步：常见问题排查
-
-| 问题 | 原因 | 解决方案 |
-|------|------|----------|
-| 页面空白/黑屏 | Mapbox Token 无效或网络不通 | 检查 `.env` 文件，确保网络能访问 `api.mapbox.com` |
-| 地图加载很慢 | Mapbox 服务器在海外 | 使用代理/VPN，或耐心等待首次加载 |
-| `npm install` 报错 | Node 版本过低或网络问题 | 确保 Node >= 16，使用国内镜像 |
-| `npm install` 卡住不动 | 网络问题 | 确认已切换国内镜像，或尝试 `npm install --legacy-peer-deps` |
-| 终端提示 `vite: command not found` | 依赖未安装成功 | 重新执行 `npm install` |
-| 页面有报错 `Failed to fetch` | Mock 服务未正常启动 | 确认 `vite.config.js` 中 mock 插件配置正确 |
-| 地图不显示/白屏 | 浏览器不支持 WebGL | 使用 Chrome 90+ 或 Edge 90+ 浏览器 |
-| 修改代码后页面无变化 | 浏览器缓存 | 按 `Ctrl+Shift+R` 强制刷新，或关闭再重新打开 |
-| `EPERM: operation not permitted` | 文件被占用 | 关闭编辑器/资源管理器中打开的 `node_modules`，重试 |
-
----
-
-### 教程速查（复制粘贴版）
-
-```bash
-# ===== 一次性环境准备 =====
-# 1. 安装 Node.js（去官网下载 LTS 版）：https://nodejs.org/
-# 2. （可选）安装 Git：https://git-scm.com/downloads
-# 3. （可选）安装 VS Code：https://code.visualstudio.com/
-
-# ===== 项目运行 =====
-# 4. 打开终端，进入项目目录
-cd smart-city
-
-# 5. （推荐）设置国内镜像，加速下载
-npm config set registry https://registry.npmmirror.com
-
-# 6. 安装项目依赖（首次需要 3~10 分钟）
-npm install
-
-# 7. 启动开发服务器
-npm run dev
-
-# 8. 浏览器打开 http://localhost:5173/
-```
-
----
-
-### 进阶：生产环境构建与预览
-
-如果你想把项目打包成静态文件部署到服务器：
-
-```bash
-# 构建生产版本（输出到 dist/ 目录）
-npm run build
-
-# 本地预览生产构建效果
-npm run preview
-```
-
-构建完成后，`dist/` 目录包含所有静态文件，可以部署到任意 Web 服务器（如 Nginx、Vercel、Netlify 等）。
+- **星空登录界面**：全屏星空粒子背景 + 角色选择（指挥员/分析员/管理员）+ 账号密码
+- **Loading 启动动画**：品牌字母渐出 + 进度条 + 加载提示文字轮播
+- **一键回首页**：点击 Header 标题回到综合态势模块
+- **全局科技感主题**：青蓝主色 + 霓虹强调，CSS 变量统一管理，毛玻璃 + 扫边光动效
 
 ---
 
@@ -288,305 +91,784 @@ npm run preview
 | 类别 | 技术 | 版本 | 用途 |
 |------|------|------|------|
 | 前端框架 | Vue 3 | ^3.5.40 | 组件化开发 (Composition API + `<script setup>`) |
+| 状态管理 | Pinia | ^4.0.2 | 全局状态中枢（地图/时间/图层/业务/AI/数据） |
 | 构建工具 | Vite | ^8.2.0 | 开发服务器与构建 |
 | 地图底图 | Mapbox GL JS | ^2.14.1 | 三维地球/地图渲染 |
-| 地理可视化 | AntV L7 | 2.15.2 | 空间数据图层渲染（建筑/道路/热力图/散点） |
+| 地理可视化 | AntV L7 | 2.15.2 | 空间数据图层渲染（建筑/道路/热力图/散点/区域/飞线） |
+| 地图适配 | @antv/l7-maps | 2.15.2 | L7 的 Mapbox 适配器 |
+| 地图控件 | @antv/l7-component | 2.15.2 | Logo/缩放/全屏/鼠标位置控件 |
 | 绘制工具 | AntV L7 Draw | 3.0.25 | 矩形框选、多边形/线测量 |
-| 统计图表 | AntV G2 | ^5.4.8 | 柱状图、饼图、玫瑰图 |
-| 空间分析 | Turf.js | ^7.3.5 | 点面关系判断等地理计算 |
-| 3D模型 | threebox-plugin | ^2.2.7 | 在 Mapbox 中加载 OBJ 三维模型 |
-| UI组件库 | Element Plus | ^2.14.3 | 表格、弹窗等组件 |
-| HTTP客户端 | Axios | ^1.19.0 | 接口请求 |
-| Mock服务 | vite-plugin-mock | 2.9.6 | 本地模拟数据接口 |
+| 统计图表 | AntV G2 | ^5.4.8 | 柱状图、饼图、玫瑰图、雷达图 |
+| 空间分析 | Turf.js | ^7.3.5 | 点面关系判断、buffer 缓冲区生成 |
+| 3D 模型 | threebox-plugin | ^2.2.7 | 在 Mapbox 中加载 OBJ 三维模型 |
+| UI 组件库 | Element Plus | ^2.14.3 | 表格、按钮等组件 |
+| HTTP 客户端 | Axios | ^1.19.0 | 接口请求 |
+| Mock 服务 | vite-plugin-mock | 2.9.6 | 本地模拟数据接口 |
+| AI 后端 | Express | ^5.2.1 | DeepSeek 代理 + SSE 流式服务 |
+| AI 模型 | DeepSeek | deepseek-chat | 大语言模型（可选，支持降级） |
+
+---
 
 ## 环境要求
 
-- Node.js >= 16.x
-- npm 或 pnpm 或 yarn
+- Node.js >= 18.x（推荐 LTS v20 或 v22）
+- npm >= 9.x
 - 现代浏览器（Chrome/Firefox/Edge 最新版，需支持 WebGL 2.0）
+- Mapbox Access Token（已内置，可替换为自己的）
 
-## 快速开始（有前端经验的开发者）
+---
+
+## 快速开始
+
+### 1. 安装依赖
 
 ```bash
+# 进入项目目录
+cd smart-city
+
+# （推荐）设置国内镜像加速
+npm config set registry https://registry.npmmirror.com
+
+# 安装依赖
 npm install
+```
+
+### 2. 启动开发服务
+
+项目有两种启动方式：
+
+#### 方式 A：一键启动前端 + AI 服务（推荐）
+
+```bash
+npm run dev:all
+```
+
+这会同时启动：
+- Vite 开发服务器（前端，默认端口 5173）
+- Express AI 服务（后端，默认端口 3001）
+
+#### 方式 B：分别启动
+
+```bash
+# 终端 1：启动前端
 npm run dev
+
+# 终端 2：启动 AI 服务
+npm run server
 ```
 
-启动后访问 `http://localhost:5173/`（端口号可能因环境不同而变化，以终端输出为准）。
+### 3. 访问应用
 
-### 生产构建
+浏览器打开 `http://localhost:5173/`（端口号以终端输出为准）。
+
+### 4. 登录
+
+- 选择角色（指挥员/分析员/管理员）
+- 输入任意非空账号密码
+- 点击"进入指挥中心"
+
+### 5. 配置 DeepSeek（可选）
+
+如需启用真实 AI 大模型（默认走规则引擎降级）：
 
 ```bash
-npm run build
+# 复制环境变量模板
+cp server/.env.example server/.env
+
+# 编辑 .env，填入你的 DeepSeek API Key
+# DEEPSEEK_API_KEY=sk-your-key-here
 ```
 
-构建产物输出到 `dist/` 目录。
+获取 API Key：访问 https://platform.deepseek.com/
 
-### 预览生产构建
+### 6. 生产构建
 
 ```bash
-npm run preview
+npm run build    # 构建到 dist/
+npm run preview  # 本地预览构建产物
 ```
 
-## 功能总览
-
-### 🗺️ 地图与视角控制
-
-- **地球/城市双视角切换**：点击底部「地球视角/城市视角」按钮在全球视角与武汉市鸟瞰视角之间飞行切换。
-  - 城市视角：`center: [114.3, 30.5]`, `zoom: 14`, `pitch: 70`（倾斜俯视）
-  - 地球视角：`center: [114.3, 30.5]`, `zoom: 1`, `pitch: 0`（正视全球）
-- **地球自转**：默认开启自转；点击底部「开始自转/停止自转」按钮可手动切换。地球视角下持续缓慢旋转，放大到一定级别后自动暂停。
-- **地图控件**：
-  - Logo 控件（左上角，WIT校徽）
-  - 鼠标经纬度位置（底部居中）
-  - 缩放控件（右下角）
-  - 全屏控件
-  - 地图主题切换控件
-
-### 🏙️ 核心图层
-
-| 图层 | 说明 | 默认状态 | 可切换 |
-|------|------|----------|--------|
-| 城市建筑 | 武汉市三维建筑，带扫光动画效果（蓝色扫描波以工大流芳校区为中心向外扩散），鼠标悬停高亮；随数字孪生时段调整灯光（傍晚/夜晚渐亮） | 开启 | - |
-| 城市道路 | 武汉市道路网络，流线动画模拟交通流动；拥堵度数据驱动着色（绿→黄→红），随时间轴时段动态变化 | 开启 | - |
-| 事故热力图 | 基于交通事件点生成，蓝→黄→红渐变呈现事故高发区域 | 关闭 | ✅ |
-| 事故散点动图 | 交通事件点水波脉冲动画，按事件类型着色（拥堵/碰撞/追尾/刮擦/故障） | 开启 | ✅ |
-| 三维厂房 | 基于 OBJ/MTL 加载的园区厂房模型，摆放在武汉工大流芳校区附近，共3座 | 关闭 | ✅ |
-
-### 🔧 交互工具
-
-- **事故查询（矩形拉框）**
-  - 点击底部「事故查询」按钮激活矩形绘制
-  - 在地图上拖拽绘制矩形区域
-  - 使用 Turf.js 进行点面空间分析，筛选出区域内的交通事件
-  - 结果以表格形式展示（事件编号、类型、详情按钮）
-  - 点击表格行可在地图上脉冲标记该点并飞行定位
-  - 点击右上角关闭按钮或再次点击「事故查询」按钮退出查询
-
-- **测量工具**
-  - **测量面积**：绘制多边形，**双击闭合**后实时显示闭合区域面积
-  - **测量长度**：绘制线段，分段显示距离（自动转换 m/km 单位）
-  - **清除**：清除所有测量图形并退出测量模式
-  - 激活测量工具时自动切换到适合测量的俯视视角，鼠标显示十字准星
-
-- **最优路径规划**
-  - 点击底部「路径规划」按钮激活，地图上依次点击**起点**（绿点）→**终点**（红点）
-  - 激活时自动切到城市俯视视角，鼠标显示十字准星
-  - 基于 2314 条道路 LineString **离线自建路网图 + A\* 搜索**，无需外部导航 API
-  - 路线贴合真实道路绘制，结果卡片显示**行驶距离 / 预计耗时 / 拥堵指数 / 绕行事故数**
-  - 「避让事故」开关（默认开启）：事故点附近 150m 的路段权重放大 100 倍，路径自动绕行；耗时与拥堵指数随时间轴当前时刻动态计算
-
-### 🕐 交通流预测动画（时空动态分析）
-
-- 底部中央**时间轴滑块**（06:00~22:00）绑定全局统一时间状态
-- 道路按当前时刻的拥堵度动态着色（**绿→黄→红**），流线动画速度随拥堵程度变化
-- 播放/暂停按钮可自动循环快进演示高峰→平峰变化
-- 城市建筑灯光、天空氛围等数字孪生效果与时间轴联动（见下）
-
-### 🌆 城市数字孪生（四时段天空/建筑/道路联动）
-
-由时间轴时段派生四个阶段：**上午 / 下午 / 傍晚 / 夜晚**，每个时段从三个维度营造氛围：
-
-**天空与大气（Mapbox `setFog`）：**
-
-| 时段 | 地平线颜色 | 太空颜色 | 星光强度 | 视觉效果 |
-|------|-----------|---------|---------|---------|
-| 上午 | 暖琥珀色 `#f5d6b8` | 柔和天蓝 `#6ba3d0` | 0.5 | 日出漫射，晨曦残星 |
-| 下午 | 晴朗天蓝 `#b8dcf5` | 深蓝 `#2e7bc4` | 0.3 | 明亮蓝天，微弱星光 |
-| 傍晚 | 绚丽落日橙 `#ff6b35` | 深紫 `#2a1045` | 0.7 | 晚霞渐变，星光渐亮 |
-| 夜晚 | 幽蓝 `#0a1929` | 幽蓝 `#0a1929` | 0.9 | 纯净夜空，繁星闪烁 |
-
-> 星光由 Mapbox fog 内置的 `star-intensity` 渲染，自动只在太空大气层中显示，不会透过地球表面。
->
-> 注意：项目不使用 `setLight`（在 globe 投影下会产生固定的昼夜分界线，导致一个半球过暗）。
-
-**建筑灯光（L7 `CityBuildingLayer` 运行期 `style()` 更新）：**
-
-| 时段 | 底座色 | 窗面色 | 高光色 | 扫光 |
-|------|--------|--------|--------|------|
-| 上午 | 冷调蓝灰 | 明亮蓝灰窗面 | 日出暖金 | 晨蓝扫光 |
-| 下午 | 中性深底 | 明亮天蓝窗面 | 阳光金色 | 鲜亮蓝扫光 |
-| 傍晚 | 暖调暗红底 | 暖橙窗面 | 落日橙红边光 | 关闭（让位万家灯火） |
-| 夜晚 | 极暗底座 | 明亮暖金窗灯 | 暖白高光 | 关闭 |
-
-**道路配色（L7 `LineLayer` 按时段重建）：**
-
-| 时段 | 拥堵配色风格 | 线宽 | 透明度 |
-|------|-------------|------|--------|
-| 上午/下午 | 标准绿→黄→红 | 1.0 | 0.8 |
-| 傍晚 | 暖调偏橙 | 1.2 | 0.85 |
-| 夜晚 | 霓虹高饱和发光 | 1.4 | 0.9 |
-
-### 🤖 AI 智能分析
-
-- 在「事故查询」结果表格中**点击任一行**，弹出 AI 分析卡片
-- 通过本地 mock 接口 `POST /api/ai_analysis` 规则生成（无需真实大模型），返回：
-  - **事故地点**：自动定位到最近的有名道路（如「民族大道」）
-  - **事故类型 / 等级 / 分析时刻**
-  - **结构化分析建议列表**（① 环境提示 ② 高峰判断 ③ 处置建议 ④ 预计恢复时间）
-- 分析结果随当前时间轴时刻动态变化（早/晚高峰判断、拥堵程度等）
-
-### 📊 数据面板
-
-左右两侧悬浮面板，采用毛玻璃半透明效果，通过 CSS Grid 定位布局。点击底部「控制中心」按钮可整体显隐。
-
-**左侧面板：**
-- **出行人口统计**：各行政区出行人口柱状图，数据每1.2秒动态增长（模拟实时数据），按数值阈值分色显示
-- **实时公交在线图**：各行政区在线公交数量玫瑰图（极坐标柱状图）
-
-**右侧面板：**
-- **人口统计图**：武汉市各行政区人口占比环形饼图，标签以蜘蛛网形式展开
-- **武汉市三甲医院**：静态统计卡片（医院30家、门诊部300个、病床3000张）
-- **高校学生统计**：静态统计卡片（高校130所、在校大学生100万）
-
-### 📐 大屏适配
-
-采用等比缩放方案：设计稿基准分辨率 **1920×1080**，监听窗口 `resize` 事件，通过 CSS `transform: scale(k)` 对整体大屏进行等比缩放，确保在任意分辨率下不变形、不挤压内容。同时修正了 CSS 缩放下 L7 地图点击坐标偏移问题。
+---
 
 ## 项目结构
 
 ```
 smart-city/
-├── mock/                          # Mock 数据接口
-│   ├── index.js                   # Mock 路由配置
-│   ├── Wuhan_Buildings.json       # 武汉建筑 GeoJSON 数据
-│   ├── Wuhan_roads.json           # 武汉道路 GeoJSON 数据
-│   └── Wuhan_events.json          # 武汉交通事件 GeoJSON 数据
-├── public/                        # 静态资源（不经构建处理）
+├── mock/                              # Mock 数据接口
+│   ├── index.js                       # Mock 路由配置（建筑/道路/事件/区域/资源/天气/AI分析）
+│   ├── Wuhan_Buildings.json           # 武汉建筑 GeoJSON
+│   ├── Wuhan_roads.json               # 武汉道路 GeoJSON（2314 条）
+│   ├── Wuhan_events.json              # 武汉交通事件 GeoJSON（50 条）
+│   ├── Wuhan_regions.json             # 武汉区域多边形（5 个片区）
+│   └── Wuhan_resources.json           # 应急资源点（15 个：医院/消防/交警）
+│
+├── server/                            # Express AI 服务（DeepSeek 代理 + SSE）
+│   ├── index.js                       # 服务入口（SSE 流式聊天接口）
+│   ├── aiContext.js                   # 数据上下文 + system prompt 构建
+│   ├── ruleEngine.js                  # 规则引擎降级（关键词意图识别）
+│   ├── env.js                         # .env 加载器（不依赖 dotenv）
+│   └── .env.example                   # 环境变量模板
+│
+├── scripts/                           # 工具脚本
+│   ├── dev-all.mjs                    # 并行启动 vite + express
+│   ├── gen-regions-resources.mjs      # 生成区域/资源 mock 数据
+│   └── route-test/                    # 路径规划测试
+│
+├── public/                            # 静态资源
 │   ├── favicon.svg
 │   └── icons.svg
+│
 ├── src/
-│   ├── api/                       # 接口层
-│   │   ├── index.js               # 业务接口定义（建筑/道路/事件）
-│   │   └── requests.js            # Axios 实例封装与拦截器
-│   ├── assets/                    # 资源文件
-│   │   ├── data/                  # 任务文档
-│   │   ├── icons/                 # SVG/PNG 图标
-│   │   ├── imgs/                  # 图片素材（头/底/边框/Logo等）
-│   │   ├── models/                # 3D模型文件（factory.obj/.mtl）
-│   │   └── styles/
-│   │       └── reset.css          # CSS 重置样式
-│   ├── components/                # Vue 组件
-│   │   ├── Footer/                # 底部控制栏
-│   │   │   ├── index.vue          # 底部栏容器
-│   │   │   ├── RotationButton.vue # 地球自转开关
-│   │   │   ├── ChartsToggle.vue   # 面板显隐开关
-│   │   │   ├── ViewSwitch.vue     # 地球/城市视角切换
-│   │   │   ├── DrawTools.vue      # 事故查询（矩形拉框）
-│   │   │   ├── MeasureTools.vue   # 测量工具（面积/长度）
-│   │   │   ├── RouteTools.vue     # 最优路径规划（点击起终点）
-│   │   │   ├── LayerToggle.vue    # 扩展图层开关通用组件
-│   │   │   ├── DisplayCard.vue    # 查询结果表格卡片
-│   │   │   ├── AiAnalysisCard.vue # AI 智能分析结果卡片
-│   │   │   ├── RouteResultCard.vue# 路径规划结果卡片
-│   │   │   └── TimeBar.vue        # 交通流时间轴滑块
-│   │   ├── ScreenPanel/           # 大屏数据面板
-│   │   │   ├── ScreenPanel.vue    # 面板容器（Grid布局）
-│   │   │   ├── Header.vue         # 顶部标题栏
-│   │   │   ├── Charts/
-│   │   │   │   ├── ChartCard.vue  # 图表卡片外壳（装饰边框）
-│   │   │   │   └── G2Chart.vue    # G2 图表包装组件
-│   │   │   └── Panels/
-│   │   │       ├── TravelChart.vue    # 出行人口柱状图
-│   │   │       ├── BusChart.vue       # 公交玫瑰图
-│   │   │       ├── PopulationChart.vue# 人口饼图
-│   │   │       ├── HospitalCard.vue   # 医院统计卡片
-│   │   │       └── UniversityCard.vue # 高校统计卡片
-│   │   ├── SmartCity/             # 地图核心逻辑
-│   │   │   ├── index.vue          # 图层加载、开关管理、数字孪生时段联动
+│   ├── api/                           # 接口层
+│   │   ├── index.js                   # 业务接口（建筑/道路/事件/AI分析）
+│   │   ├── requests.js                # Axios 实例 + 拦截器
+│   │   ├── regions.js                 # 区域/资源接口
+│   │   └── ai.js                      # AI 流式聊天接口（fetch + SSE 解析）
+│   │
+│   ├── stores/                        # Pinia 状态中枢
+│   │   ├── index.js                   # 统一导出 + createPinia
+│   │   ├── map.js                     # 地图场景状态（scene/map 镜像）
+│   │   ├── time.js                    # 时间轴状态（hour/playing/period）
+│   │   ├── layers.js                  # 图层开关状态（heatmap/scatter/model3d）
+│   │   ├── business.js                # 业务模块状态（module/area/event/策略/模拟）
+│   │   ├── ai.js                      # AI 对话状态（messages/streaming/mode）
+│   │   └── data.js                    # 数据缓存（建筑/道路/事件/区域/资源 + 降级标记）
+│   │
+│   ├── composables/                   # 组合式函数（兼容层，代理到 Pinia）
+│   │   ├── useSceneMap.js             # inject 地图场景（provide/inject 封装）
+│   │   ├── useLayerToggles.js         # 图层开关（代理到 layers store）
+│   │   └── useTimeOfDay.js            # 时间轴（代理到 time store）
+│   │
+│   ├── utils/                         # 工具函数
+│   │   ├── dataFallback.js            # 数据请求→缓存→降级 统一工具
+│   │   ├── routeGraph.js              # 路径规划路网建图 + A* 搜索
+│   │   └── mapCursor.js               # 地图光标样式管理
+│   │
+│   ├── assets/
+│   │   ├── styles/
+│   │   │   ├── reset.css              # CSS 重置
+│   │   │   └── theme.css              # 全局科技感主题变量 + 通用动效
+│   │   ├── icons/                     # SVG/PNG 图标
+│   │   ├── imgs/                      # 图片素材（头/底/边框/Logo 等）
+│   │   ├── models/                    # 3D 模型（factory.obj/.mtl）
+│   │   └── data/                      # 任务文档
+│   │
+│   ├── components/
+│   │   ├── SmartCity/                 # 地图核心逻辑
+│   │   │   ├── index.vue              # 图层加载/开关/数字孪生/业务模块联动
 │   │   │   └── hooks/
-│   │   │       ├── useBuildings.js    # 建筑图层（时段灯光样式）
-│   │   │       ├── useRoads.js        # 道路图层（时段拥堵配色）
-│   │   │       ├── useHeatmap.js      # 热力图层
-│   │   │       ├── useScatterAnimate.js # 散点动画图层
-│   │   │       └── useModels3d.js     # 三维厂房模型
-│   │   ├── MapContainer.vue       # 地图容器（初始化Mapbox+L7，provide场景）
-│   │   ├── MapControls.vue        # 地图控件（Logo/缩放/全屏等）
-│   │   └── ScreenScale.vue        # 大屏等比缩放容器
-│   ├── composables/               # 组合式函数（逻辑复用）
-│   │   ├── useSceneMap.js         # 注入地图场景（provide/inject封装）
-│   │   ├── useLayerToggles.js     # 扩展图层开关共享状态（模块级单例）
-│   │   └── useTimeOfDay.js        # 统一时间轴状态（模块级单例，驱动拥堵/数字孪生/AI/路径）
-│   ├── utils/                     # 工具函数
-│   │   └── routeGraph.js          # 路径规划路网建图 + A* 搜索（离线）
-│   ├── App.vue                    # 根组件
-│   ├── main.js                    # 应用入口
-│   └── style.css                  # 全局样式
-├── .env                           # 环境变量（Mapbox Access Token）
-├── index.html                     # HTML 入口
-├── vite.config.js                 # Vite 配置（别名/插件/构建选项）
-└── package.json                   # 项目依赖与脚本
+│   │   │       ├── useBuildings.js    # 建筑图层（CityBuildingLayer + 时段灯光）
+│   │   │       ├── useRoads.js        # 道路图层（拥堵着色 + 时段重建）
+│   │   │       ├── useHeatmap.js      # 热力图层（事故密集点）
+│   │   │       ├── useScatterAnimate.js # 散点动图（事件水波脉冲）
+│   │   │       ├── useModels3d.js     # 三维厂房（threebox OBJ 模型）
+│   │   │       ├── useRegions.js      # 区域多边形（3D 挤出 + 风险着色）
+│   │   │       ├── useResources.js    # 应急资源（点位 + 服务半径缓冲区）
+│   │   │       └── useFlyline.js      # 飞线辐射（中心→区域弧线动画）
+│   │   │
+│   │   ├── ScreenPanel/               # 大屏数据面板
+│   │   │   ├── ScreenPanel.vue        # 面板容器（Grid 布局 + 模块切换）
+│   │   │   ├── Header.vue             # 顶部标题栏（天气 + 时段 + 回首页）
+│   │   │   ├── BusinessNav.vue        # 顶部业务导航（4 模块 tab）
+│   │   │   ├── KpiBar.vue             # KPI 指标卡片矩阵
+│   │   │   ├── Charts/
+│   │   │   │   ├── ChartCard.vue      # 图表卡片外壳（装饰边框）
+│   │   │   │   └── G2Chart.vue        # G2 图表包装组件
+│   │   │   └── Panels/
+│   │   │       ├── TravelChart.vue        # 出行人口柱状图
+│   │   │       ├── BusChart.vue           # 公交玫瑰图
+│   │   │       ├── PopulationChart.vue    # 人口饼图
+│   │   │       ├── HospitalCard.vue       # 医院统计卡片
+│   │   │       ├── UniversityCard.vue     # 高校统计卡片
+│   │   │       ├── RiskRadarChart.vue     # 风险贡献雷达图
+│   │   │       ├── EventTypeChart.vue     # 事件类型分布（玫瑰图）
+│   │   │       ├── RegionRiskRank.vue     # 区域风险排行榜
+│   │   │       ├── HighRiskEvents.vue     # 高风险事件列表
+│   │   │       ├── ResourceFilter.vue     # 资源分类筛选
+│   │   │       ├── ResourceCoverage.vue   # 片区资源覆盖效能
+│   │   │       ├── SimulationStrategies.vue # 应急处置策略勾选
+│   │   │       └── SimulationPreview.vue  # 推演预估与模拟
+│   │   │
+│   │   ├── AiAssistant/               # AI 智能助手
+│   │   │   └── AiAssistant.vue        # 悬浮入口 + 抽屉式对话窗（流式 + 溯源）
+│   │   │
+│   │   ├── Footer/                    # 底部控制栏
+│   │   │   ├── index.vue              # 底部栏容器
+│   │   │   ├── RotationButton.vue     # 地球自转开关
+│   │   │   ├── ChartsToggle.vue       # 面板显隐开关
+│   │   │   ├── ViewSwitch.vue         # 地球/城市视角切换
+│   │   │   ├── DrawTools.vue          # 事故查询（矩形拉框）
+│   │   │   ├── MeasureTools.vue       # 测量工具（面积/长度）
+│   │   │   ├── RouteTools.vue         # 最优路径规划
+│   │   │   ├── LayerToggle.vue        # 扩展图层开关通用组件
+│   │   │   ├── DisplayCard.vue        # 查询结果（拉框聚合统计 + 表格）
+│   │   │   ├── AiAnalysisCard.vue     # AI 分析结果卡片（一键追问）
+│   │   │   ├── RouteResultCard.vue    # 路径规划结果卡片
+│   │   │   └── TimeBar.vue            # 交通流时间轴滑块
+│   │   │
+│   │   ├── MapContainer.vue           # 地图容器（Mapbox+L7 初始化 + provide）
+│   │   ├── MapControls.vue            # 地图控件（Logo/缩放/全屏/鼠标位置）
+│   │   ├── ScreenScale.vue            # 大屏等比缩放容器（1920×1080）
+│   │   ├── Loading.vue                # 启动 Loading 遮罩
+│   │   └── Login.vue                  # 登录界面（星空 + 角色选择）
+│   │
+│   ├── App.vue                        # 根组件（登录流程 + 主屏组装）
+│   └── main.js                        # 应用入口（Pinia + ElementPlus）
+│
+├── .env                               # 环境变量（Mapbox Token）
+├── index.html                         # HTML 入口
+├── vite.config.js                     # Vite 配置（别名/Mock/Proxy/构建）
+└── package.json                       # 项目依赖与脚本
 ```
+
+---
+
+## 架构设计
+
+### 整体架构
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        App.vue（根组件）                         │
+│  ┌─────────────┐  ┌──────────────────────────────────────────┐  │
+│  │  Login.vue  │  │  主屏（登录后渲染）                        │  │
+│  │  星空登录    │  │  ┌─────────────────────────────────────┐ │  │
+│  └─────────────┘  │  │  ScreenScale（等比缩放 1920×1080）   │ │  │
+│                   │  │  ┌─────────────────────────────────┐ │ │  │
+│                   │  │  │  MapContainer（Mapbox + L7）    │ │ │  │
+│                   │  │  │  ├── SmartCity（图层管理）       │ │ │  │
+│                   │  │  │  ├── ScreenPanel（数据面板）     │ │ │  │
+│                   │  │  │  └── MapControls（地图控件）     │ │ │  │
+│                   │  │  └─────────────────────────────────┘ │ │  │
+│                   │  └─────────────────────────────────────┘ │  │
+│                   │  Loading.vue    AiAssistant.vue           │  │
+│                   └──────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+         │                    │                      │
+         ▼                    ▼                      ▼
+   ┌──────────┐       ┌─────────────┐       ┌──────────────┐
+   │  Pinia   │       │  Mock 服务  │       │  Express AI  │
+   │  状态中枢 │       │  (vite插件) │       │  服务(3001)  │
+   └──────────┘       └─────────────┘       └──────────────┘
+```
+
+### 组件通信
+
+| 通信方式 | 使用场景 |
+|----------|----------|
+| **Pinia Store** | 全局状态中枢，所有组件共享（地图/时间/图层/业务/AI/数据） |
+| **provide/inject** | MapContainer → 后代组件注入 L7 Scene + Mapbox Map 实例 |
+| **defineModel** | Footer ↔ ScreenPanel 双向绑定面板显隐 |
+| **watch 联动** | business.module 变化 → SmartCity 切换图层 + flyTo；time.hour 变化 → 数字孪生联动 |
+
+### 数据流
+
+```
+用户操作 → Pinia Store 变更 → watch 触发 → 图层/面板/视角联动
+                ↓
+          dataStore.loadAll()
+                ↓
+        fetchBuildings/Roads/Events/Regions/Resources
+                ↓
+          成功 → 缓存 + 显示
+          失败 → 降级标记 + 空数据兜底（不阻塞渲染）
+```
+
+---
+
+## 业务模块详解
+
+### 模块切换机制
+
+顶部 `BusinessNav` 组件提供 4 个 tab，点击后调用 `business.setModule(key)`，触发以下联动：
+
+1. **SmartCity** 的 `watch(business.module)` 触发 `applyBusinessModule()`：
+   - 切换区域图层显隐（risk/resource/simulation 显示，overview 隐藏）
+   - 切换资源图层显隐（仅 resource 显示）
+   - 切换飞线图层显隐（仅 overview 显示）
+   - `map.flyTo()` 飞行到模块对应视角
+
+2. **ScreenPanel** 的 `v-if="business.module === 'xxx'"` 条件渲染左右面板内容
+
+3. **KpiBar** 的 `computed` 按 `business.module` 返回不同 KPI 指标
+
+### 模块一：综合态势（overview）
+
+- **地图**：城市俯瞰视角（zoom=14, pitch=70），飞线辐射动画
+- **左侧**：出行人口柱状图（动态增长） + 公交客流玫瑰图
+- **右侧**：人口统计饼图 + 医院统计卡片 + 高校统计卡片
+- **KPI**：实时事件数、监测区域数、当前时段、道路总量
+
+### 模块二：交通风险诊断（risk）
+
+- **地图**：区域 3D 挤出（按 riskScore 挤出高度 + 着色）
+- **左侧**：风险贡献雷达图（事件数/平均等级/风险分/拥堵指数） + 事件类型分布玫瑰图
+- **右侧**：区域风险排行榜（点击联动地图高亮+飞行） + 高风险事件列表
+- **KPI**：高风险事件数、最高风险区域、风险指数、事件总数
+
+### 模块三：应急资源可达（resource）
+
+- **地图**：区域多边形 + 资源点位（医院/消防/交警）+ 服务半径缓冲区
+- **左侧**：资源分类筛选（点击联动地图过滤） + 片区资源覆盖效能
+- **右侧**：医院统计卡片 + 高校统计卡片
+- **KPI**：资源点数、总容量、服务覆盖率、缺口区域数
+
+### 模块四：情景推演优化（simulation）
+
+- **地图**：区域 3D 挤出（目标片区高亮）
+- **左侧**：应急处置策略勾选（4 种策略） + 目标片区选择
+- **右侧**：推演预估（实时指标对比） + 运行模拟按钮
+- **KPI**：当前风险、预计降幅、覆盖提升、恢复时长
+
+**策略定义：**
+
+| 策略 key | 名称 | 边际效应 |
+|----------|------|----------|
+| signal | 信号灯优化配时 | 风险 -0.6, 拥堵 -1.2, 恢复 -4min |
+| diversion | 交通分流绕行 | 风险 -0.8, 拥堵 -1.8, 恢复 -6min |
+| ambulance | 救护资源调度 | 风险 -0.4, 拥堵 -0.2, 恢复 -3min, 覆盖 +8% |
+| restriction | 临时限行管制 | 风险 -0.5, 拥堵 -0.6, 恢复 -2min |
+
+---
+
+## AI 智能助手
+
+### 架构
+
+```
+前端 AiAssistant.vue
+    │
+    ├── useAiStore (Pinia)  ─── 消息列表 / 流式状态 / 抽屉开关
+    │
+    ├── streamChat() (api/ai.js)  ─── fetch + ReadableStream 解析 SSE
+    │
+    └── /api/ai/chat  ─── vite proxy 转发 ─── Express (3001)
+                                                    │
+                                        ┌───────────┴───────────┐
+                                        │                       │
+                                  DeepSeek API            规则引擎降级
+                                  (流式 SSE 转发)         (关键词意图识别)
+```
+
+### SSE 事件协议
+
+| 事件 | 数据 | 说明 |
+|------|------|------|
+| `sources` | `[{key, label}]` | 数据溯源标签（引用了哪些数据源） |
+| `mode` | `"deepseek"` / `"rule"` / `"rule-fallback"` | 当前响应模式 |
+| `warn` | `{message}` | 警告信息（如大模型调用失败） |
+| `message` | `{content: "..."}` | 流式文本增量 |
+| `refs` | `["规则引擎", ...]` | 规则引擎引用标签 |
+| `done` | `[DONE]` | 流结束 |
+
+### 数据上下文注入
+
+`server/aiContext.js` 从 mock 数据构建 system prompt，注入给 DeepSeek：
+
+- 区域风险排行（5 个片区的风险评分、事件数、平均等级）
+- 事件类型分布（交通拥堵/碰撞/追尾/刮擦/车辆故障）
+- 资源类型分布（医院/消防/交警）
+- 当前时段上下文（早高峰/白天/晚高峰/夜间）
+- 选中区域信息
+- 情景推演上下文（已选策略、是否已运行模拟）
+
+### 规则引擎降级
+
+`server/ruleEngine.js` 通过关键词匹配识别用户意图，生成结构化响应：
+
+| 意图 | 关键词 | 响应内容 |
+|------|--------|----------|
+| risk_ranking | 风险/最高/排行 | Top 3 风险区域 + 建议 |
+| compare | 对比/比较 | 两区域指标对比 |
+| strategy | 策略/建议/处置 | 4 种策略推荐 + 预估效果 |
+| resource | 资源/医院/覆盖 | 资源概况 + 建议 |
+| event_dist | 事件/类型/分布 | 事件类型分布统计 |
+| simulation | 推演/模拟/效果 | 推演说明 + 指标变化范围 |
+| time | 时段/时间/高峰 | 当前时段 + 总览数据 |
+| general | 其他 | 系统总览 + 引导提问 |
+
+---
+
+## 地图图层与可视化
+
+### 图层清单
+
+| 图层 | Hook | L7 类型 | zIndex | 默认 | 可切换 |
+|------|------|---------|--------|------|--------|
+| 城市建筑 | useBuildings | CityBuildingLayer | - | 开启 | - |
+| 城市道路 | useRoads | LineLayer | 0 | 开启 | - |
+| 事故热力图 | useHeatmap | HeatmapLayer | 2 | 关闭 | ✅ |
+| 事故散点动图 | useScatterAnimate | PointLayer | 3 | 开启 | ✅ |
+| 三维厂房 | useModels3d | threebox custom | - | 关闭 | ✅ |
+| 区域多边形 | useRegions | PolygonLayer(extrude) | 1 | 按模块 | - |
+| 区域边线 | useRegions | LineLayer | 2 | 按模块 | - |
+| 应急资源点 | useResources | PointLayer | 4 | 按模块 | - |
+| 资源服务半径 | useResources | PolygonLayer(fill) | 1 | 按模块 | - |
+| 飞线辐射 | useFlyline | LineLayer(arc) | 5 | 按模块 | - |
+| 飞线终点 | useFlyline | PointLayer(wave) | 6 | 按模块 | - |
+| 城市中心 | useFlyline | PointLayer(wave) | 7 | 按模块 | - |
+
+### 飞线辐射动画
+
+- 从武汉中心 `[114.3, 30.5]` 向 5 个区域中心发射弧线
+- L7 `LineLayer.shape('arc')` 自动生成贝塞尔弧度
+- 按风险值着色：`#00e5ff → #7fd6ff → #ffd700 → #ff8c00 → #ff4d4d`
+- 流动动画：duration=4s，trailLength=0.6
+- 终点脉冲：水波扩散动画（rings=2）
+- 中心点脉冲：更大范围水波（rings=3）
+
+### 3D 区域挤出
+
+- `PolygonLayer.shape('extrude')` + `depth: true`
+- 挤出高度：`riskScore * 120`（最低 200）
+- 风险配色：`#2ecc40(绿) → #ffd700(黄) → #ff8c00(橙) → #ff4d4d(红)`
+- 鼠标悬停高亮 + pickLight 效果
+- 点击区域排行联动 `highlightRegion()` 高亮选中区域
+
+### 资源服务半径
+
+- 使用 `@turf/turf` 的 `buffer()` 生成圆形缓冲区
+- 按资源 `serviceRadius` 属性（1200m / 1500m）生成
+- 半透明填充展示覆盖范围
+- 资源点按类型着色：医院(红) / 消防(橙) / 交警(蓝)
+
+---
+
+## 交互工具
+
+### 事故查询（矩形拉框）
+
+1. 点击底部「事故查询」激活矩形绘制
+2. 地图拖拽绘制矩形区域
+3. Turf.js 点面空间分析筛选框内事件
+4. DisplayCard 展示：拉框聚合统计 + 类型分布迷你条 + 事件表格
+5. 点击表格行 → 地图脉冲标记 + 飞行定位 + AI 分析
+
+### 测量工具
+
+- **面积测量**：多边形绘制，双击闭合，实时显示面积
+- **长度测量**：线段绘制，分段显示距离（m/km 自动转换）
+- **清除**：清除所有测量图形
+
+### 最优路径规划
+
+- 点击起点（绿点）→ 终点（红点）
+- 基于 2314 条道路离线自建路网图 + A* 搜索
+- 空间网格连接边缝合碎片化路网（250m 阈值）
+- 避让事故开关：事故点 150m 内路段权重 ×100
+- 结果卡片：行驶距离 / 预计耗时 / 拥堵指数 / 绕行事故数
+
+---
+
+## 数字孪生时段联动
+
+底部时间轴滑块（06:00~22:00）驱动四时段联动：
+
+### 天空与大气（Mapbox setFog）
+
+| 时段 | 地平线 | 太空 | 星光 | 效果 |
+|------|--------|------|------|------|
+| 上午 | 暖琥珀 #f5d6b8 | 天蓝 #6ba3d0 | 0.5 | 日出漫射 |
+| 下午 | 天蓝 #b8dcf5 | 深蓝 #2e7bc4 | 0.3 | 明亮蓝天 |
+| 傍晚 | 落日橙 #ff6b35 | 深紫 #2a1045 | 0.7 | 晚霞渐变 |
+| 夜晚 | 幽蓝 #0a1929 | 幽蓝 #0a1929 | 0.9 | 繁星闪烁 |
+
+### 建筑灯光（L7 style 运行期更新）
+
+| 时段 | 底座 | 窗面 | 高光 | 扫光 |
+|------|------|------|------|------|
+| 上午 | 冷调蓝灰 | 明亮蓝灰 | 日出暖金 | 晨蓝 |
+| 下午 | 中性深底 | 明亮天蓝 | 阳光金色 | 鲜亮蓝 |
+| 傍晚 | 暖调暗红 | 暖橙 | 落日橙红 | 关闭 |
+| 夜晚 | 极暗 | 暖金窗灯 | 暖白 | 关闭 |
+
+### 道路拥堵（按时段重建图层）
+
+| 时段 | 配色 | 线宽 | 透明度 |
+|------|------|------|--------|
+| 上午/下午 | 标准绿→黄→红 | 1.0 | 0.8 |
+| 傍晚 | 暖调偏橙 | 1.2 | 0.85 |
+| 夜晚 | 霓虹高饱和 | 1.4 | 0.9 |
+
+---
+
+## 数据面板与图表
+
+### 面板布局
+
+CSS Grid 三行三列布局：
+```
+┌─────────────────────────────────────┐
+│  Header（100px）                     │
+├──────────┬──────────────┬───────────┤
+│  左侧    │  中间(地图)   │  右侧     │
+│  340px   │  flex-1       │  340px   │
+├──────────┴──────────────┴───────────┤
+│  Footer（80px）                      │
+└─────────────────────────────────────┘
+```
+
+顶部悬浮：BusinessNav（100px 处）+ KpiBar（150px 处）
+
+### KPI 指标卡片
+
+按业务模块动态切换，毛玻璃 + 扫边光效果：
+
+| 模块 | KPI 1 | KPI 2 | KPI 3 | KPI 4 |
+|------|-------|-------|-------|-------|
+| 综合态势 | 实时事件数 | 监测区域数 | 当前时段 | 道路总量 |
+| 风险诊断 | 高风险事件数 | 最高风险区域 | 风险指数 | 事件总数 |
+| 资源可达 | 资源点数 | 总容量 | 服务覆盖率 | 缺口区域数 |
+| 情景推演 | 当前风险 | 预计降幅 | 覆盖提升 | 恢复时长 |
+
+### 图表组件
+
+- **ChartCard.vue**：统一卡片外壳（标题 + 装饰边框 + 插槽）
+- **G2Chart.vue**：G2 v5 包装组件（创建/渲染/增量更新/销毁生命周期管理）
+- 所有 G2 图表使用 `classicDark` 主题，适配暗色大屏
+
+---
+
+## 登录与体验优化
+
+### 登录界面（Login.vue）
+
+- 全屏星空粒子背景（60 个随机位置闪烁星点）
+- 角色选择：指挥员 / 分析员 / 管理员
+- 账号密码输入（任意非空即可登录）
+- 登录按钮扫光动画 + 品牌字母渐出
+- 淡出过渡后进入主屏
+
+### Loading 启动动画（Loading.vue）
+
+- 品牌字母"智慧城市"逐字渐出
+- 进度条（0→100%，2.2 秒）
+- 加载提示文字轮播（初始化三维地球/加载建筑数据/构建路网拓扑...）
+- z-index: 10001，确保覆盖在所有图层之上
+
+### Header 顶部栏
+
+- 左侧：实时天气（图标 + 温度 + 描述），随时段变化
+- 中间：标题"智慧城市-武汉"，点击一键回综合态势
+- 右侧：当前时段（08:00 上午）
+
+### 全局主题（theme.css）
+
+CSS 变量体系：
+- 主色：`--c-primary: #1990ff` / `--c-accent: #00e5ff`
+- 背景：`--bg-base: #0a1426` / `--bg-panel: rgba(16,32,56,0.72)`
+- 文字：`--t-primary: #eaf3fb` / `--t-secondary: #8fa8c2`
+- 光晕：`--glow-primary` / `--glow-accent`
+- 通用类：`.glass-card`（毛玻璃）/ `.scan-line`（扫边光）/ `.num-mono`（数字字体）/ `.btn-pulse`（按钮微交互）
+
+---
+
+## 状态管理（Pinia）
+
+### Store 清单
+
+| Store | 文件 | 状态 | 职责 |
+|-------|------|------|------|
+| useMapStore | map.js | sceneRef | 地图场景镜像（供非后代组件访问） |
+| useTimeStore | time.js | hour, playing, period | 时间轴（0-23h + 播放 + 时段派生） |
+| useLayerStore | layers.js | toggles{heatmap,scatter,model3d} | 扩展图层开关 |
+| useBusinessStore | business.js | module, selectedArea, strategies, simulationResult | 业务模块 + 情景推演 |
+| useAiStore | ai.js | messages, streaming, open, mode | AI 对话 + 流式状态 |
+| useDataStore | data.js | buildings, roads, events, regions, resources, degraded | 数据缓存 + 降级标记 |
+
+### 兼容层设计
+
+`composables/` 下的 `useLayerToggles.js` 和 `useTimeOfDay.js` 是兼容层，代理到 Pinia store，保持老组件接口不变：
+
+```javascript
+// 老接口（仍可用）
+const toggles = useLayerToggles()  // → store.toggles
+const { state, period } = useTimeOfDay()  // → store.hour / store.period
+```
+
+### 数据降级机制
+
+`utils/dataFallback.js` 实现统一的请求→缓存→降级策略：
+
+```
+请求成功 → 缓存数据 + degraded=false
+请求失败 → 有缓存 → 返回缓存 + degraded=true
+         → 无缓存 → 返回空 FeatureCollection + degraded=true
+```
+
+单源数据失败不阻塞整体渲染，其他数据源正常展示。
+
+---
+
+## Mock 数据与 API
+
+### Mock 接口
+
+通过 `vite-plugin-mock` 拦截 `/api` 请求：
+
+| 接口 | 方法 | 数据文件 | 说明 |
+|------|------|----------|------|
+| `/api/wuhan_buildings` | GET | Wuhan_Buildings.json | 武汉建筑 GeoJSON |
+| `/api/wuhan_roads` | GET | Wuhan_roads.json | 武汉道路（2314 条） |
+| `/api/wuhan_events` | GET | Wuhan_events.json | 交通事件（50 条） |
+| `/api/wuhan_regions` | GET | Wuhan_regions.json | 区域多边形（5 片区） |
+| `/api/wuhan_resources` | GET | Wuhan_resources.json | 应急资源（15 个点） |
+| `/api/weather` | GET | 按时段生成 | 实时天气 |
+| `/api/ai_analysis` | POST | 规则生成 | 事故 AI 分析（本地） |
+
+> 注意：`/api/ai/chat` 由 vite proxy 转发到 Express 服务（3001），不被 mock 拦截。
+
+### 区域数据结构
+
+每个区域 Feature 包含：
+- `area`: 区域编号（区域1~区域5）
+- `name`: 区域名称（光谷核心区/流芳科教区等）
+- `riskScore`: 风险评分（0-10）
+- `eventCount`: 事件数
+- `avgLevel`: 平均等级
+- `typeDist`: 事件类型分布
+- `center`: 中心坐标
+- `geometry`: Polygon 多边形
+
+### 资源数据结构
+
+每个资源 Feature 包含：
+- `type`: hospital / fire / police
+- `typeName`: 医院 / 消防站 / 交警队
+- `capacity`: 容量
+- `serviceRadius`: 服务半径（米）
+- `area`: 所属区域
+
+---
+
+## Express AI 服务
+
+### 服务架构
+
+```
+server/
+├── index.js       # Express 入口，SSE 流式聊天接口
+├── aiContext.js   # 数据上下文 + system prompt 构建
+├── ruleEngine.js  # 规则引擎降级
+├── env.js         # .env 加载器
+└── .env.example   # 环境变量模板
+```
+
+### 接口
+
+| 接口 | 方法 | 说明 |
+|------|------|------|
+| `/api/ai/health` | GET | 健康检查，返回模式（deepseek/rule） |
+| `/api/ai/chat` | POST | SSE 流式聊天 |
+
+### 请求体
+
+```json
+{
+  "messages": [{"role": "user", "content": "当前哪个区域风险最高?"}],
+  "context": {
+    "module": "risk",
+    "selectedArea": "区域2",
+    "hour": 8,
+    "simulationRun": false,
+    "strategies": {"signal": true, "diversion": false}
+  }
+}
+```
+
+### 降级策略
+
+1. 有 `DEEPSEEK_API_KEY` → 调用 DeepSeek 流式 API，逐 chunk 转发
+2. DeepSeek 调用失败 → 切换规则引擎，模拟打字机逐字输出
+3. 无 `DEEPSEEK_API_KEY` → 直接走规则引擎
+
+---
 
 ## 配置说明
 
 ### 环境变量
 
-项目根目录 `.env` 文件：
+**根目录 `.env`（前端）：**
 
 ```env
-# Mapbox 访问令牌（公开 pk token，生产环境建议配置 URL 白名单）
-# 请在 https://account.mapbox.com/access-tokens/ 获取自己的 Token 后填入
 VITE_TOKEN=你的_Mapbox_Public_Token
 ```
 
-如需替换为自己的 Mapbox Token，请在 [Mapbox 官网](https://www.mapbox.com/) 注册获取。
+**`server/.env`（AI 服务，可选）：**
 
-### 路径别名
+```env
+# DeepSeek API Key（留空走规则引擎降级）
+DEEPSEEK_API_KEY=
 
-`@` 指向 `src/` 目录，导入模块时可使用 `@/components/xxx.vue` 代替相对路径。
+# 模型名（默认 deepseek-chat，也可用 deepseek-reasoner）
+DEEPSEEK_MODEL=deepseek-chat
 
-### Vite 特殊配置
+# 接口地址（默认官方地址）
+# DEEPSEEK_URL=https://api.deepseek.com/chat/completions
 
-- `assetsInlineLimit: 0`：所有静态资源一律输出为文件、不做 base64 内联。threebox 需要真实可 fetch 的 `.obj/.mtl` URL（内联成 data URL 无法被 MTLLoader 加载）。
+# Express 端口（默认 3001）
+AI_PORT=3001
+```
 
-## 架构设计
+### Vite 配置
 
-### 组件通信
+- **别名**：`@` → `src/`
+- **Mock**：`mockPath: 'mock'`，开发环境启用
+- **Proxy**：`/api/ai` → `http://localhost:3001`（AI 服务转发）
+- **构建**：`assetsInlineLimit: 0`（所有资源输出为文件，threebox 需要可 fetch 的 URL）
 
-- **provide/inject**：[MapContainer.vue](src/components/MapContainer.vue) 通过 `provide` 将 L7 Scene 与 Mapbox Map 实例注入到后代组件，子组件通过 [useSceneMap.js](src/composables/useSceneMap.js) 这个 composable 获取，避免了 props 层层传递。
-- **模块级单例状态**：[useLayerToggles.js](src/composables/useLayerToggles.js) 在模块作用域创建一个 `reactive` 对象作为图层开关的共享状态，Footer 的按钮与 SmartCity 的图层管理引用同一对象，实现一处改动全局同步。
-- **统一时间轴**：[useTimeOfDay.js](src/composables/useTimeOfDay.js) 采用同样的模块级单例模式，维护 `hour`（0-23）与 `period`（上午/下午/傍晚/夜晚）两个全局状态。道路拥堵着色、数字孪生天空/灯光、AI 分析时段判断、路径规划耗时计算**四处共享同一时间轴**，拖动滑块或自动播放时全局联动。
-- **defineModel 双向绑定**：ChartsToggle 与 Footer、ScreenPanel 之间通过 `v-model` 控制面板显隐。
+### npm 脚本
 
-### 图层管理
+| 脚本 | 说明 |
+|------|------|
+| `npm run dev` | 启动 Vite 开发服务器 |
+| `npm run server` | 启动 Express AI 服务 |
+| `npm run dev:all` | 并行启动前端 + AI 服务 |
+| `npm run build` | 生产构建 |
+| `npm run preview` | 预览构建产物 |
 
-- 建筑、道路图层始终显示，不可关闭。
-- 热力图、散点、三维厂房三个扩展图层始终挂载在场景上，开关只调用 L7 的 `show()/hide()` 切换显隐，不销毁重建，避免重复请求数据和重复创建图层带来的性能开销。
-- 三维厂房由 threebox 独立管理（Mapbox custom layer），只切换 THREE 对象的 `visibility` 属性。
-- 图层初始化采用独立 try-catch 隔离，单个图层创建失败不会影响其他图层。
-
-### 数字孪生时段联动
-
-时间轴变化时，`applyDigitalTwin` 函数按顺序执行：
-1. `applySky(map)` — 通过 `map.setFog()` 更新天空/大气/星光
-2. `updateBuildingStyle(period)` — 通过 L7 `layer.style()` 更新建筑灯光
-3. `rebuildRoads(scene, hour)` — 移除旧道路图层，按新时刻重建（颜色/粗细/透明度）
-
-每步均有 try-catch 保护，单步失败不中断整体联动。
-
-### Mock 数据
-
-开发环境通过 `vite-plugin-mock` 拦截 `/api` 前缀的请求，直接返回 `mock/` 目录下的 JSON 文件，无需启动后端服务。四个接口：
-
-| 接口 | 方法 | 数据文件 |
-|------|------|----------|
-| `/api/wuhan_buildings` | GET | Wuhan_Buildings.json |
-| `/api/wuhan_roads` | GET | Wuhan_roads.json |
-| `/api/wuhan_events` | GET | Wuhan_events.json |
-| `/api/ai_analysis` | POST | 规则生成（基于 events + roads 数据） |
-
-数据格式为标准 GeoJSON（FeatureCollection）。
+---
 
 ## 开发注意事项
 
-1. **threebox 加载方式**：threebox-plugin 的 CommonJS 源码与 Vite ESM 预打包存在兼容问题，项目中采用其 UMD 构建（`dist/threebox.min.js`），通过 `window.Threebox` 和 `window.tb` 全局变量访问。
-2. **shallowRef 用于地图实例**：Scene 和 Map 实例是第三方库对象，层次很深，使用 `shallowRef` 而非 `ref` 避免 Vue 深度代理带来的性能问题。
-3. **CSS 缩放坐标修正**：ScreenScale 使用 CSS transform scale 缩放大屏，会导致 L7 点击坐标偏移。MapContainer 中通过 monkey-patch `containerToLngLat` / `lngLatToContainer` 方法做了视觉坐标与布局坐标的换算。
-4. **切回地球视角清理临时图层**：L7 Draw 创建的图层 name 为自增数字串，ViewSwitch 在切回地球视角时会通过正则 `/^\d+$/` 匹配并移除这些临时测量/绘制图层，而不影响建筑/道路等命名图层。路径规划图层命名为 `route-line` / `route-start` / `route-end`，不受影响。
-5. **路径规划路网碎片化**：mock 道路在真实交叉口处坐标不共享（OSM 数据精度所致），直接按共享顶点建图会形成上千个孤立小连通块。`routeGraph.js` 采用**空间网格连接边**（250m 阈值、每链≤5条）将碎片缝合为主连通网络（~88%），起终点吸附时**优先吸附到 ≥500 节点的大连通分量**，避免落在孤立小团导致路径无解；构建结果与事故屏蔽边均做模块级缓存，首次调用（挂载时预热）约 1s，后续计算毫秒级。
-6. **不使用 setLight**：Mapbox `setLight` 在 globe 投影下会产生固定的昼夜分界线（一个半球过暗不可见），因此项目仅使用 `setFog` 实现时段天空效果，不使用 `setLight`。
-7. **资源清理**：所有组件在 `onBeforeUnmount` 中清理事件监听、销毁地图实例、清除定时器、移除临时图层，避免内存泄漏。
+1. **Pinia 替代模块级单例**：项目从模块级 `reactive` 单例迁移到 Pinia store，支持 devtools 调试与跨组件联动。`composables/` 下保留兼容层代理到 store。
+
+2. **shallowRef 用于地图实例**：Scene 和 Map 实例是第三方库对象，层次很深，使用 `shallowRef` 避免 Vue 深度代理性能问题。
+
+3. **CSS 缩放坐标修正**：ScreenScale 使用 `transform: scale(k)` 缩放大屏，会导致 L7 点击坐标偏移。MapContainer 中 monkey-patch `containerToLngLat` / `lngLatToContainer` 做视觉↔布局坐标换算。
+
+4. **threebox 加载方式**：采用 UMD 构建（`dist/threebox.min.js`），通过 `window.Threebox` 和 `window.tb` 全局变量访问，绕开 Vite ESM 打包兼容问题。
+
+5. **图层显隐而非销毁**：扩展图层（热力图/散点/三维厂房）始终挂载，开关只调用 `show()/hide()`，避免重复请求和创建开销。
+
+6. **独立 try-catch 隔离**：各图层初始化采用独立 try-catch，单个图层失败不影响其他图层。
+
+7. **不使用 setLight**：Mapbox `setLight` 在 globe 投影下会产生固定昼夜分界线，项目仅用 `setFog` 实现时段天空效果。
+
+8. **SSE 代理不缓冲**：vite proxy 转发 `/api/ai` 时需确保不缓冲 SSE 流，`X-Accel-Buffering: no` 头防止 nginx 反代缓冲。
+
+9. **资源清理**：所有组件在 `onBeforeUnmount` 中清理事件监听、销毁地图实例、清除定时器、移除临时图层。
+
+10. **路径规划路网碎片化**：mock 道路在交叉口坐标不共享，`routeGraph.js` 采用空间网格连接边缝合碎片（250m 阈值），优先吸附到大连通分量。
+
+---
+
+## 常见问题
+
+| 问题 | 原因 | 解决方案 |
+|------|------|----------|
+| 页面空白/黑屏 | Mapbox Token 无效或网络不通 | 检查 `.env` 中 `VITE_TOKEN`，确保能访问 `api.mapbox.com` |
+| AI 助手无响应 | Express 服务未启动 | 执行 `npm run server` 或 `npm run dev:all` |
+| AI 响应是规则引擎 | 未配置 DeepSeek API Key | 在 `server/.env` 中填写 `DEEPSEEK_API_KEY` |
+| 地图加载很慢 | Mapbox 服务器在海外 | 使用代理/VPN，或耐心等待首次加载 |
+| `npm install` 报错 | Node 版本过低或网络问题 | 确保 Node >= 18，使用国内镜像 |
+| 端口被占用 | 5173/3001 已被使用 | Vite 会自动换端口；AI 服务可在 `.env` 改 `AI_PORT` |
+| `dev:all` 启动失败 | Windows spawn 问题 | 已修复（`shell: isWin`），确保使用最新代码 |
+| 模块切换面板空白 | 数据未加载完成 | 等待 Loading 完成；数据降级机制会保证空数据不报错 |
+| 飞线不显示 | 不在综合态势模块 | 飞线仅在 overview 模块显示，切回该模块即可 |
+| 浏览器控制台 ERR_ABORTED | SSE 连接关闭 | 属正常行为，AI 响应不受影响 |
+
+---
 
 ## 浏览器支持
 
@@ -596,3 +878,84 @@ VITE_TOKEN=你的_Mapbox_Public_Token
 - Safari >= 14
 
 需支持 WebGL 2.0（Mapbox GL JS v2 要求）。
+
+---
+
+## 本地运行教程（从零开始）
+
+### 第一步：安装 Node.js
+
+1. 打开 https://nodejs.org/
+2. 下载 LTS 版（v20 或 v22）
+3. 双击安装包，一路 Next
+4. 验证：终端输入 `node -v` 和 `npm -v`，显示版本号即成功
+
+### 第二步：获取项目代码
+
+```bash
+git clone <项目仓库地址>
+cd smart-city
+```
+
+或直接下载 ZIP 压缩包解压。
+
+### 第三步：配置国内镜像（推荐）
+
+```bash
+npm config set registry https://registry.npmmirror.com
+```
+
+### 第四步：安装依赖
+
+```bash
+npm install
+```
+
+> 预计 3~10 分钟。如遇版本冲突，尝试 `npm install --legacy-peer-deps`。
+
+### 第五步：配置 Mapbox Token
+
+项目已内置 Token，通常可跳过。如需替换：
+
+编辑根目录 `.env` 文件：
+```env
+VITE_TOKEN=你的_Mapbox_Public_Token
+```
+
+获取 Token：https://account.mapbox.com/access-tokens/
+
+### 第六步：启动服务
+
+```bash
+# 一键启动（推荐）
+npm run dev:all
+
+# 或分别启动
+npm run dev      # 前端
+npm run server   # AI 服务
+```
+
+### 第七步：访问应用
+
+浏览器打开 `http://localhost:5173/`（端口以终端输出为准）。
+
+### 速查（复制粘贴版）
+
+```bash
+cd smart-city
+npm config set registry https://registry.npmmirror.com
+npm install
+npm run dev:all
+# 浏览器打开 http://localhost:5173/
+```
+
+---
+
+## 进阶：生产构建
+
+```bash
+npm run build    # 构建到 dist/
+npm run preview  # 本地预览
+```
+
+构建产物可部署到任意 Web 服务器（Nginx / Vercel / Netlify 等）。AI 服务需单独部署 Node.js 环境。

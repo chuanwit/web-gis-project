@@ -27,22 +27,32 @@
       <ol class="ai-list">
         <li v-for="(item, i) in result.analysis" :key="i">{{ item }}</li>
       </ol>
+
+      <!-- 一键追问: 把事故上下文带到 AI 助手, 用大模型继续深入分析 -->
+      <button class="ask-btn" @click="askInAssistant">
+        <span class="ask-icon">◆</span> 在 AI 助手中追问
+      </button>
     </template>
   </div>
 </template>
 <script setup>
 // AI 智能分析卡片: 接收事故 feature, 调 mock 接口 /api/ai_analysis 生成分析建议
-// 规则内容由 mock 端按 类型/等级/区域/时段 生成, 未来可无缝替换为真实大模型接口
+// 规则内容由 mock 端按 类型/等级/区域/时段 生成
+// 增加"在 AI 助手中追问"按钮: 把事故上下文带到 AiAssistant 抽屉, 用真实大模型继续分析
 import { ref, watch } from 'vue'
 import { getAiAnalysis } from '@/api'
 import { useTimeOfDay } from '@/composables/useTimeOfDay'
+import { useAiStore, useBusinessStore, useTimeStore } from '@/stores'
 
 const props = defineProps({
   feature: { type: Object, required: true },
 })
-defineEmits(['close'])
+const emit = defineEmits(['close'])
 
 const { state: timeState } = useTimeOfDay()
+const ai = useAiStore()
+const business = useBusinessStore()
+const timeStore = useTimeStore()
 
 const loading = ref(true)
 const result = ref(null)
@@ -70,6 +80,30 @@ async function load() {
   } finally {
     if (cur === seq) loading.value = false
   }
+}
+
+// 一键追问: 把事故上下文带到 AI 助手, 用大模型继续分析
+function askInAssistant() {
+  if (!result.value) return
+  const r = result.value
+  const loc = r.location ? `${r.location}(${r.area})` : r.area
+  const question = `请分析 ${loc} 的 ${r.type} 事故(等级 ${r.level}, 时刻 ${r.time})的处置建议, 并结合当前城市态势给出资源调度方案`
+
+  // 构建上下文(同步业务模块/时段, 让大模型知道当前态势)
+  const context = {
+    module: business.module,
+    selectedArea: business.selectedArea,
+    hour: timeStore.hour,
+    simulationRun: business.simulationRun,
+    strategies: business.strategies,
+  }
+
+  // 打开 AI 助手抽屉并发送
+  ai.toggle(true)
+  ai.sendStreamMessage(question, context)
+
+  // 关闭本卡片(避免遮挡)
+  emit('close')
 }
 </script>
 <style scoped>
@@ -160,5 +194,32 @@ async function load() {
 .ai-list li {
   line-height: 1.9;
   color: #eaf3fb;
+}
+
+/* 一键追问按钮 */
+.ask-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #00e5ff;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.12), rgba(25, 144, 255, 0.12));
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.ask-btn:hover {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.3), rgba(25, 144, 255, 0.3));
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+}
+.ask-icon {
+  font-size: 10px;
 }
 </style>
